@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
+<title>HomeScreen</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="w3_style.css">
-<link rel="stylesheet" href="poppins_style.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
 body {font-size:16px;}
@@ -17,20 +17,20 @@ body {font-size:16px;}
 <nav class="w3-sidenav w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidenav"><br>
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-padding-xlarge w3-hide-large w3-display-topleft w3-hover-white" style="width:100%;font-size:22px">Close Menu</a>
   <div class="w3-container">
-    <h3 class="w3-padding-64"><b>Company<br>Name</b></h3>
+    <h3 class="w3-padding-64"><b>Remembrall<br></b></h3>
   </div>
   <a href="#" onclick="w3_close()" class="w3-padding w3-hover-white">Home</a> 
-  <a href="#showcase" onclick="w3_close()" class="w3-padding w3-hover-white">Showcase</a> 
-  <a href="#services" onclick="w3_close()" class="w3-padding w3-hover-white">Services</a> 
-  <a href="#designers" onclick="w3_close()" class="w3-padding w3-hover-white">Designers</a> 
-  <a href="#packages" onclick="w3_close()" class="w3-padding w3-hover-white">Packages</a> 
+
+  <a href="history.html" onclick="w3_close()" class="w3-padding w3-hover-white">History</a> 
+  <a href="settings.html" onclick="w3_close()" class="w3-padding w3-hover-white">Settings</a> 
+  <a href="#packages" onclick="w3_close()" class="w3-padding w3-hover-white">Sign Out</a> 
   <a href="#contact" onclick="w3_close()" class="w3-padding w3-hover-white">Contact</a>
 </nav>
 
 <!-- Top menu on small screens -->
 <header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
   <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
-  <span>Company Name</span>
+  <span>Remembrall</span>
 </header>
 
 <!-- Overlay effect when opening sidenav on small screens -->
@@ -41,22 +41,26 @@ body {font-size:16px;}
 
   <!-- Header -->
   <div class="w3-container" style="margin-top:80px" id="showcase">
-    <h1 class="w3-jumbo"><b>Interior Design</b></h1>
-    <h1 class="w3-xxxlarge w3-text-red"><b>Showcase.</b></h1>
+    <h1 class="w3-jumbo"><b>Who would you like to remind?</b></h1>
+
     <hr style="width:50px;border:5px solid red" class="w3-round">
   </div>
   
-  <!-- Photo grid (modal) -->
+  <!-- Photo grid (modal) *** THIS WILL HAVE TO BE POPULATED BY DB LATER ALSO INCLUDE SEARCH FUNCTION-->
   <div class="w3-row-padding">
     <div class="w3-half">
-      <img src="/w3images/kitchenconcrete.jpg" style="width:100%" onclick="onClick(this)" alt="Concrete meets bricks">
-      <img src="/w3images/livingroom.jpg" style="width:100%" onclick="onClick(this)" alt="Light, white and tight scandinavian design">
-      <img src="/w3images/diningroom.jpg" style="width:100%" onclick="onClick(this)" alt="White walls with designer chairs">
+    
+    <img class="w3-image" style="border-radius:50%;max-width:50%" src="ed.jpg" />
+     <img class="w3-image" style="border-radius:50%;max-width:50%" src="ed.jpg" />
+      <img class="w3-image" style="border-radius:50%;max-width:50%" src="ed.jpg" />
+    
     </div>
 
     <div class="w3-half">
-      <img src="/w3images/atrium.jpg" style="width:100%" onclick="onClick(this)" alt="Windows for the atrium">
-      <img src="/w3images/bedroom.jpg" style="width:100%" onclick="onClick(this)" alt="Bedroom and office in one space">
+       <img class="w3-image" style="border-radius:50%;max-width:50%" src="ed.jpg" />
+       <img class="w3-image" style="border-radius:50%;max-width:50%" src="ed.jpg" onclick="onClick(this)" alt="Edward Foyle"/>
+
+      
       <img src="/w3images/livingroom2.jpg" style="width:100%" onclick="onClick(this)" alt="Scandinavian design">
     </div>
   </div>
