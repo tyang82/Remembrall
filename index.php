@@ -5,15 +5,13 @@ $params = explode("/", $params);
 $params = array_splice($params,1);
 //$params = array_map('strtolower', $params);
 
-array_shift($params);
-if(empty(end($params))){
-    array_pop($params);
-}
-echo "<style type=\"text/css\">";
-include("w3_style.css");
-echo "</style>";
-if (strcmp($params[0], "home")==0) {
-    include("home_screen.html");
+// array_shift($params);
+// if(empty(end($params))){
+//     array_pop($params);
+// }
+
+if (empty($params) || strcmp($params[0], "home")==0) {
+    include("home_screen.php");
 } else if (strcmp($params[0], "login")==0) {
     include("login_page.html");
 }
