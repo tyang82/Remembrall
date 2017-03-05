@@ -1,16 +1,26 @@
 <?php
 
+// CHANGE THIS TO TRUE WHEN PUSHING LIVE
+// CHANGE TO FALSE WHEN USING LOCALHOST
+$LIVE = true;
+
+//If the HTTPS is not found to be "on"
+if($LIVE && (!isset($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on"))
+{
+    //Tell the browser to redirect to the HTTPS URL.
+    header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+    //Prevent the rest of the script from executing.
+    exit;
+}
+
 $params = strtok($_SERVER['REQUEST_URI'], '?');
 $params = explode("/", $params);
 $params = array_splice($params,1);
 //$params = array_map('strtolower', $params);
-
-// array_shift($params);
-// if(empty(end($params))){
-//     array_pop($params);
-// }
-
-if (empty($params) || strcmp($params[0], "home")==0) {
+if ($LIVE && empty($params)) {
+    header("Location: https://remembrall.me/home");
+    exit;
+} else if (strcmp($params[0], "home")==0) {
     include("home_screen.php");
 } else if (strcmp($params[0], "login")==0) {
     include("login_page.html");
