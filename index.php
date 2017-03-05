@@ -9,7 +9,9 @@ array_shift($params);
 if(empty(end($params))){
     array_pop($params);
 }
-
+echo "<style type=\"text/css\">";
+include("w3_style.css");
+echo "</style>";
 if (strcmp($params[0], "home")==0) {
     include("home_screen.html");
 } else if (strcmp($params[0], "login")==0) {

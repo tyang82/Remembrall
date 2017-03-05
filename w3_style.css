@@ -1,4 +1,4 @@
-﻿/* W3.CSS 2.97 Feb 2017 by Jan Egil and Borge Refsnes */
+/* W3.CSS 2.97 Feb 2017 by Jan Egil and Borge Refsnes */
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 /* Extract from normalize.css by Nicolas Gallagher and Jonathan Neal git.io/normalize */
 html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}
@@ -398,8 +398,8 @@ img {
 }
 .thumb {
     display: inline-block;
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     margin: 5px;
     border: 3px solid #c99;
     background-position: center center;
