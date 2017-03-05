@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html>
 <title>HomeScreen</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="w3_style.css">
+<link rel="stylesheet" href="/w3_style.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
@@ -12,6 +14,20 @@ body {font-size:16px;}
 .w3-half img:hover{opacity:1}
 </style>
 <body>
+    <div id="amazon-root"></div>
+ <script type="text/javascript">
+
+    window.onAmazonLoginReady = function() {
+      amazon.Login.setClientId('amzn1.application-oa2-client.60c59c23ce9a415abeff731d5078dc81');
+    };
+    (function(d) {
+      var a = d.createElement('script'); a.type = 'text/javascript';
+      a.async = true; a.id = 'amazon-login-sdk';
+      a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+      d.getElementById('amazon-root').appendChild(a);
+    })(document);
+
+ </script>
 
 <!-- Sidenav/menu -->
 <nav class="w3-sidenav w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidenav"><br>
@@ -19,6 +35,24 @@ body {font-size:16px;}
   <div class="w3-container">
     <h3 class="w3-padding-64"><b>Remembrall<br></b></h3>
   </div>
+    <div class="login">
+            <a href id="LoginWithAmazon">
+    <img border="0" alt="Login with Amazon"
+        src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
+        width="156" height="32" />
+    </a>
+    <script type="text/javascript">
+
+    document.getElementById('LoginWithAmazon').onclick = function() {
+    options = { scope : 'profile' };
+    amazon.Login.authorize(options,
+        'localhost/r/login');
+    return false;
+    };
+
+    </script>
+    </div>
+    
   <a href="#" onclick="w3_close()" class="w3-padding w3-hover-white">Home</a> 
 
   <a href="history.html" onclick="w3_close()" class="w3-padding w3-hover-white">History</a> 
