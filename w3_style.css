@@ -11,7 +11,7 @@ dfn{font-style:italic}mark{background:#ff0;color:#000}
 small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
 sub{bottom:-0.25em}sup{top:-0.5em}figure{margin:1em 40px}
 img{border-style:none;
-    border-radius: 50%;
+  
 
 }svg:not(:root){overflow:hidden}
 code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}
@@ -38,7 +38,7 @@ h1,h2,h3,h4,h5,h6{font-weight:400;margin:10px 0}.w3-wide{letter-spacing:4px}
 h1 a,h2 a,h3 a,h4 a,h5 a,h6 a{font-weight:inherit}
 hr{border:0;border-top:1px solid #eee;margin:20px 0}
 img{margin-bottom:-5px}a{color:inherit}
-.w3-image{width:auto;height:auto;border-radius: 50%;
+.w3-image{width:auto;height:auto;
 }
 .w3-table,.w3-table-all{border-collapse:collapse;border-spacing:0;width:100%;display:table}
 .w3-table-all{border:1px solid #ccc}
@@ -368,10 +368,22 @@ input[type=checkbox].w3-check:disabled+.w3-validate,input[type=radio].w3-radio:d
 }
 
 
-.crop {
-    width: 50px;
-    height: 50px;
+.w3-square {
+    width: 200px;
+    height: 200px;
     overflow: hidden;
+    margin: 10px;
+    position: relative;
+}
+.crop {
+    position: absolute;
+    left: -100%;
+    right: -100%;
+    top: -100%;
+    bottom: -100%;
+    margin: auto; 
+    height: auto;
+    width: auto;
 }
 .check{
 	border-radius:50%;
@@ -383,4 +395,30 @@ img {
   max-height:95px;
   width: auto;
   height: auto;
+}
+.thumb {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    margin: 5px;
+    border: 3px solid #c99;
+    background-position: center center;
+    background-size: cover;
+}
+.thumblist {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.thumblist img {
+    display: inline-block;
+    min-width: 100%;
+    min-height: 100%;
+    -ms-interpolation-mode: bicubic; /* Better image scaling in IE */
+    border-radius: 50%;
+}
+
+p {
+    clear: both
 }
