@@ -27,12 +27,17 @@ $sdk = new Aws\Sdk([
         'secret' => 'wH1d/cvCwKkYMDT1TnxoDYsb+zv5mK4GCSsRAgUX']
 ]);
 
+if (empty($currUser['email'])) {
+  $email = 'wbroome14@gatech.edu';
+} else {
+  $email = $currUser['email'];
+}
 $dynamodb = $sdk->createDynamoDb();
 $response = $dynamodb->query([
     'TableName' => 'users',
     'KeyConditionExpression' => 'email = :email',
     'ExpressionAttributeValues' =>  [
-        ':email' => ['S' => $currUser['email']]
+        ':email' => ['S' => $email]
     ]
 ]);
 
