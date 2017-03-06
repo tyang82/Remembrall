@@ -13,7 +13,6 @@ body {font-size:16px;}
 </style>
 <body>
 
-
 <script type='text/javascript' src='knockout-3.4.1.js'></script>
 <!-- php code to dynamically populate the html-->
 <?php
@@ -22,18 +21,18 @@ require 'vendor/autoload.php';
 $sdk = new Aws\Sdk([
     'region'   => 'us-east-1',
     'version'  => 'latest',
+    'http' => ['verify' => false],
     'credentials' => [
         'key' => 'AKIAIXF4IAK25EI56ZLA',
         'secret' => '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']
 ]);
 
 $dynamodb = $sdk->createDynamoDb();
-
 $response = $dynamodb->query([
     'TableName' => 'users',
     'KeyConditionExpression' => 'email = :email',
     'ExpressionAttributeValues' =>  [
-        ':email' => ['S' => 'wbroome14@gmail.com']
+        ':email' => ['S' => $currUser['email']]
     ]
 ]);
 
