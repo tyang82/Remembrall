@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <title>HomeScreen</title>
@@ -14,44 +12,51 @@ body {font-size:16px;}
 .w3-half img:hover{opacity:1}
 </style>
 <body>
-    <div id="amazon-root"></div>
- <script type="text/javascript">
 
-    window.onAmazonLoginReady = function() {
-      amazon.Login.setClientId('amzn1.application-oa2-client.60c59c23ce9a415abeff731d5078dc81');
-    };
-    (function(d) {
-      var a = d.createElement('script'); a.type = 'text/javascript';
-      a.async = true; a.id = 'amazon-login-sdk';
-      a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
-      d.getElementById('amazon-root').appendChild(a);
-    })(document);
 
- </script>
+<script type='text/javascript' src='knockout-3.4.1.js'></script>
+<!-- php code to dynamically populate the html-->
+<?php
+require 'vendor/autoload.php';
 
+$sdk = new Aws\Sdk([
+    'region'   => 'us-east-1',
+    'version'  => 'latest',
+    'credentials' => [
+        'key' => 'AKIAIXF4IAK25EI56ZLA',
+        'secret' => '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']
+]);
+
+$dynamodb = $sdk->createDynamoDb();
+
+$response = $dynamodb->query([
+    'TableName' => 'users',
+    'KeyConditionExpression' => 'uid = :uid',
+    'ExpressionAttributeValues' =>  [
+        ':uid' => ['S' => '0']
+    ]
+]);
+
+$firstName = $response['Items'][0]['firstName']['S'];
+$lastName = $response['Items'][0]['lastName']['S'];
+$careGiverFirstName = $response['Items'][0]['careGiverFirstName']['S'];
+$careGiverLastName = $response['Items'][0]['careGiverLastName']['S'];
+$age = $response['Items'][0]['age']['N'];
+$uid = $response['Items'][0]['uid']['S'];
+
+?>
+
+
+
+
+
+
+ 
 <!-- Sidenav/menu -->
 <nav class="w3-sidenav w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidenav"><br>
-  <a href="javascript:void(0)" onclick="w3_close()" class="w3-padding-xlarge w3-hide-large w3-display-topleft w3-hover-white" style="width:100%;font-size:22px">Close Menu</a>
   <div class="w3-container">
     <h3 class="w3-padding-64"><b>Remembrall<br></b></h3>
   </div>
-    <div class="login">
-            <a href id="LoginWithAmazon">
-    <img border="0" alt="Login with Amazon"
-        src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
-        width="156" height="32" />
-    </a>
-    <script type="text/javascript">
-
-    document.getElementById('LoginWithAmazon').onclick = function() {
-    options = { scope : 'profile' };
-    amazon.Login.authorize(options,
-        'localhost/r/login');
-    return false;
-    };
-
-    </script>
-    </div>
     
   <a href="#" onclick="w3_close()" class="w3-padding w3-hover-white">Home</a> 
 
@@ -82,22 +87,24 @@ body {font-size:16px;}
   
   <!-- Photo grid (modal) *** THIS WILL HAVE TO BE POPULATED BY DB LATER ALSO INCLUDE SEARCH FUNCTION-->
   <div class="w3-row-padding">
-    <div class="w3-half">
     
+    <!-- <img class="thumblist" style="border-radius:25%" src="/pig.jpg" />
 
-    <img class="thumblist" style="border-radius:25%" src="/pig.jpg" />
-
-     <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" />
-      <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" />
+     <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" /> -->
+    <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" />
+    <!-- <p>Caregiver First Name: <span data-bind="text: careGiverFirstName"> </span></p>
+    <p>Last name: <span data-bind="text: careGiverLastName"> </span></p> -->
+    <p>First Name: <span data-bind="text: firstName"> </span></p>
+    <p>Last name: <span data-bind="text: lastName"> </span></p>
+    <p>Age: <span data-bind="text: age"> </span></p>
+    <p>Uid: <span data-bind="text: uid"> </span></p>
     
-    </div>
-
-    <div class="w3-half">
+    <!-- <div class="w3-half">
 
        <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" />
 
        <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" onclick="onClick(this)" alt="Edward Foyle"/>
-    </div>
+    </div> -->
   </div>
 
   <!-- Modal for full size images on click-->
@@ -129,6 +136,21 @@ function onClick(element) {
   var captionText = document.getElementById("caption");
   captionText.innerHTML = element.alt;
 }
+</script>
+
+
+
+<script type="text/javascript">
+var clientViewModel = function(first, last) {
+    this.firstName = ko.observable("<?php echo $firstName;?>");
+    this.lastName = ko.observable("<?php echo $lastName;?>");
+    this.careGiverFirstName = ko.observable("<?php echo $careGiverFirstName;?>");
+    this.careGiverLastName = ko.observable("<?php echo $careGiverLastName;?>");
+    this.age = ko.observable("<?php echo $age;?>");
+    this.uid = ko.observable("<?php echo $uid;?>");
+};
+ 
+ko.applyBindings(new clientViewModel());
 </script>
 
 </body>
