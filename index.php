@@ -9,11 +9,12 @@ $params = array_splice($params,1);
 // if(empty(end($params))){
 //     array_pop($params);
 // }
-
 if (empty($params) || strcmp($params[0], "home")==0) {
     include("home_screen.php");
 } else if (strcmp($params[0], "login")==0) {
     include("login_page.html");
+} else if (strcmp($params[0], "test")==0) {
+	include("home_page_queries.php");
 }
 
 // if(count($params)==3){

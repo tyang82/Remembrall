@@ -31,9 +31,9 @@ $dynamodb = $sdk->createDynamoDb();
 
 $response = $dynamodb->query([
     'TableName' => 'users',
-    'KeyConditionExpression' => 'uid = :uid',
+    'KeyConditionExpression' => 'email = :email',
     'ExpressionAttributeValues' =>  [
-        ':uid' => ['S' => '0']
+        ':email' => ['S' => 'wbroome14@gmail.com']
     ]
 ]);
 
@@ -42,7 +42,6 @@ $lastName = $response['Items'][0]['lastName']['S'];
 $careGiverFirstName = $response['Items'][0]['careGiverFirstName']['S'];
 $careGiverLastName = $response['Items'][0]['careGiverLastName']['S'];
 $age = $response['Items'][0]['age']['N'];
-$uid = $response['Items'][0]['uid']['S'];
 
 ?>
 
@@ -96,8 +95,8 @@ $uid = $response['Items'][0]['uid']['S'];
     <p>Last name: <span data-bind="text: careGiverLastName"> </span></p> -->
     <p>First Name: <span data-bind="text: firstName"> </span></p>
     <p>Last name: <span data-bind="text: lastName"> </span></p>
-    <p>Age: <span data-bind="text: age"> </span></p>
-    <p>Uid: <span data-bind="text: uid"> </span></p>
+    <!-- <p>Age: <span data-bind="text: age"> </span></p>
+    <p>Uid: <span data-bind="text: uid"> </span></p> -->
     
     <!-- <div class="w3-half">
 
