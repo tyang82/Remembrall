@@ -96,10 +96,10 @@ $age = $response['Items'][0]['age']['N'];
     <p>Last name: <span data-bind="text: careGiverLastName"> </span></p> -->
     <p>First Name: <span data-bind="text: firstName"> </span></p>
     <p>Last name: <span data-bind="text: lastName"> </span></p>
-<!--
-    <p>Age: <span data-bind="text: age"> </span></p>
-    <p>Uid: <span data-bind="text: uid"> </span></p>
--->
+
+    <!-- <p>Age: <span data-bind="text: age"> </span></p>
+    <p>Uid: <span data-bind="text: uid"> </span></p> -->
+
     
     <!-- <div class="w3-half">
 
