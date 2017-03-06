@@ -45,8 +45,7 @@ body {font-size:16px;}
 
     document.getElementById('LoginWithAmazon').onclick = function() {
     options = { scope : 'profile' };
-    amazon.Login.authorize(options,
-        'localhost/r/login');
+    amazon.Login.authorize(options, 'https://remembrall.me/handle_login');
     return false;
     };
 
