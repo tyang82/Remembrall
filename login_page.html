@@ -6,58 +6,74 @@
 
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
-body {font-size:16px;}
+body {font-size:16px;background-image: url("/login_background3.jpg");}
 .w3-half img{margin-bottom:-6px;margin-top:10px;opacity:0.8;cursor:pointer}
 .w3-half img:hover{opacity:1}
 </style>
 
-<div class="login-page" style="margin-left:25%;margin-right:25%">
-    <!-- Header -->
-  <div class="w3-container" style="margin-top:30px" id="showcase">
-    <h1 class="w3-xxlarge"><b>Remembrall</b></h1>
-    <h1 class="w3-xlarge w3-text-red"><b>Login</b></h1>
-    <hr style="width:40px;border:4px solid red" class="w3-round">
-  </div>
+<body >
+    <div id="amazon-root"></div>
+ <script type="text/javascript">
+
+    window.onAmazonLoginReady = function() {
+      amazon.Login.setClientId('amzn1.application-oa2-client.60c59c23ce9a415abeff731d5078dc81');
+    };
+    (function(d) {
+      var a = d.createElement('script'); a.type = 'text/javascript';
+      a.async = true; a.id = 'amazon-login-sdk';
+      a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+      d.getElementById('amazon-root').appendChild(a);
+    })(document);
+
+ </script>
     
-  <div class="form" >
-    <form class="login-form" action="/action_handler.php" method="post">
-      <div class="w3-group">
-        <label>Email</label>
-        <input class="w3-input w3-border" placeholder="Enter Email" type="text" name="Name" required>
-      </div>
-      <div class="w3-group">
-        <label>Password</label>
-        <input class="w3-input w3-border" placeholder="Enter Password" type="text" name="Email" required>
-      </div>
-      <button type="submit" class="w3-button w3-block w3-padding-medium w3-red w3-margin-bottom">Login</button>
-      <!--   <p class="message">Already registered? <a href="#">Sign In</a></p>    -->
-    </form>
-      
-    <!--header-->  
-  <div class="w3-container" style="margin-top:30px" id="showcase">
-    <h1 class="w3-xlarge w3-text-red"><b>Registration</b></h1>
-    <hr style="width:40px;border:4px solid red" class="w3-round">
-  </div>
-      
-      
-    <form class="registration-form" action="action_handler.php" method="post">
-      <div class="w3-group">
-        <label>Name</label>
-        <input class="w3-input w3-border" placeholder="Enter Name" type="text" name="Name" required>
-      </div>
-      <div class="w3-group">
-        <label>Password</label>
-        <input class="w3-input w3-border" placeholder="Enter Password" type="text" name="Password" required>
-      </div>
-        <div class="w3-group">
-        <label>Email</label>
-        <input class="w3-input w3-border" placeholder="Enter Email" type="text" name="Email" required>
-      </div>
-      <button type="submit" class="w3-button w3-block w3-padding-medium w3-red w3-margin-bottom">Register</button>
-      <!--   <p class="message">Not registered? <a href="#">Create an account</a></p>   -->
-    </form>
-  </div>
-</div>
+    
+    
+    
+   
+    
+    
+    
+    
+    <div class="login-page" style="margin-left:25%;margin-right:25%">
+    <!-- Header -->
+        <div class="w3-container" style="margin-top:30px" id="showcase">
+        <h1 class="w3-xxlarge w3-text-red"><b>Remembrall</b></h1>
+        <hr style="width:auto;border:4px solid red" class="w3-round">
+            <h1 class="w3-xlarge w3-text-black"><b>Remembrall, Never Forget.</b></h1>
+        </div>
+        <div class="w3-container">
+    <p>We are a interior design service that focus on what's best for your home and what's best for you!</p>
+    <p>Some text about our services - what we do and what we offer. We are lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor
+    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </p>
+        
+  
+        
+        
+        
+       
+         <div class="login" style="text-align: center; padding-top:10%;">
+            <a href id="LoginWithAmazon">
+                <img border="0" alt="Login with Amazon"
+                src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_drkgry_312x64.png"/>
+             </a>
+        </div>
+               
+        </div>
+    </div>
 
 
 
+
+<script type="text/javascript">
+
+    document.getElementById('LoginWithAmazon').onclick = function() {
+    options = { scope : 'profile' };
+    amazon.Login.authorize(options,
+        'localhost/r/login');
+    return false;
+    };
+
+    </script>

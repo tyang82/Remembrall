@@ -23,6 +23,7 @@ $params = strtok($_SERVER['REQUEST_URI'], '?');
 $params = explode("/", $params);
 $params = array_splice($params,1);
 //$params = array_map('strtolower', $params);
+
 if (strcmp($params[0], "home")==0) {
     include("home_screen.php");
 } else if (strcmp($params[0], "login")==0) {
