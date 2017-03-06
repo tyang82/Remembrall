@@ -39,9 +39,6 @@ $response = $dynamodb->query([
 
 $firstName = $response['Items'][0]['firstName']['S'];
 $lastName = $response['Items'][0]['lastName']['S'];
-$careGiverFirstName = $response['Items'][0]['careGiverFirstName']['S'];
-$careGiverLastName = $response['Items'][0]['careGiverLastName']['S'];
-$age = $response['Items'][0]['age']['N'];
 
 ?>
 
@@ -143,10 +140,6 @@ function onClick(element) {
 var clientViewModel = function(first, last) {
     this.firstName = ko.observable("<?php echo $firstName;?>");
     this.lastName = ko.observable("<?php echo $lastName;?>");
-    this.careGiverFirstName = ko.observable("<?php echo $careGiverFirstName;?>");
-    this.careGiverLastName = ko.observable("<?php echo $careGiverLastName;?>");
-    this.age = ko.observable("<?php echo $age;?>");
-    this.uid = ko.observable("<?php echo $uid;?>");
 };
  
 ko.applyBindings(new clientViewModel());
