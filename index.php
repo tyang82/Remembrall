@@ -2,7 +2,7 @@
 
 // CHANGE THIS TO TRUE WHEN PUSHING LIVE
 // CHANGE TO FALSE WHEN USING LOCALHOST
-$LIVE = true;
+$LIVE = false;
 
 //if($LIVE && (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off")){
 //    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -25,14 +25,10 @@ $params = array_splice($params,1);
 //$params = array_map('strtolower', $params);
 
 if (strcmp($params[0], "home")==0) {
+    $currUser = verifyLogin($_REQUEST);
     include("home_screen.php");
 } else if (strcmp($params[0], "login")==0) {
     include("login_page.html");
-} else if (strcmp($params[0], "handle_login") == 0) {
-    include("handle_login.php");
-    $currUser = verifyLogin($_REQUEST);
-    print_r("got back: ");
-    var_dump($currUser);
 } else if ($LIVE) {
     header("Location: https://remembrall.me/home");
     exit;

@@ -1,5 +1,8 @@
 <?php
-function verifyLogin($req) {
+function verifyLogin($req, $live) {
+    if (!$live) {
+        return array("name" => "Tommy Lee Jones", "email" => "wbroome14@gmail.com", "id" => "thisIsAGarbageString");
+    }
     // verify that the access token belongs to us
     $c = curl_init('https://api.amazon.com/auth/o2/tokeninfo?access_token=' . urlencode($req['access_token']));
     curl_setopt($c, CURLOPT_RETURNTRANSFER, true);

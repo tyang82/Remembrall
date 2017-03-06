@@ -70,10 +70,14 @@ body {font-size:16px;background-image: url("/login_background3.jpg");}
 <script type="text/javascript">
 
     document.getElementById('LoginWithAmazon').onclick = function() {
-    options = { scope : 'profile' };
-    amazon.Login.authorize(options,
-        'localhost/r/login');
-    return false;
+        if (<?php echo $live ?> === "true") {
+            options = { scope : 'profile' };
+            amazon.Login.authorize(options,
+                'https://remembrall.me/home');
+            return false;
+        } else {
+            window.location = "localhost/home";
+        }
     };
 
     </script>
