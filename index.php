@@ -23,9 +23,13 @@ $params = strtok($_SERVER['REQUEST_URI'], '?');
 $params = explode("/", $params);
 $params = array_splice($params,1);
 //$params = array_map('strtolower', $params);
-
+include("handle_login.php");
 if (strcmp($params[0], "home")==0) {
-    $currUser = verifyLogin($_REQUEST);
+    $currUser = verifyLogin($_REQUEST, $LIVE);
+    if (!is_array($currUser)) {
+        header("Location: https://remembrall.me/login");
+        exit;
+    }
     include("home_screen.php");
 } else if (strcmp($params[0], "login")==0) {
     include("login_page.html");
