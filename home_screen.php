@@ -18,13 +18,15 @@ body {font-size:16px;}
 <?php
 require 'vendor/autoload.php';
 
+date_default_timezone_set('America/New_York');
+    
 $sdk = new Aws\Sdk([
     'region'   => 'us-east-1',
     'version'  => 'latest',
     'http' => ['verify' => false],
     'credentials' => [
-        'key' => 'placeholder',
-        'secret' => 'placeholder'],
+        'key' => '',
+        'secret' => ''],
 ]);
 
 if (empty($currUser['email'])) {
@@ -43,7 +45,10 @@ $response = $dynamodb->query([
 
 $firstName = $response['Items'][0]['firstName']['S'];
 $lastName = $response['Items'][0]['lastName']['S'];
+    
+    
 
+   
 
 ?>
 
@@ -81,33 +86,58 @@ $lastName = $response['Items'][0]['lastName']['S'];
 
   <!-- Header -->
   <div class="w3-container" style="margin-top:80px" id="showcase">
-    <h1 class="w3-jumbo"><b>Who would you like to remind?</b></h1>
+    <h1 class="w3-jumbo"><b>What would you like to remind?</b></h1>
 
     <hr style="width:50px;border:5px solid red" class="w3-round">
   </div>
   
   <!-- Photo grid (modal) *** THIS WILL HAVE TO BE POPULATED BY DB LATER ALSO INCLUDE SEARCH FUNCTION-->
-  <div class="w3-row-padding">
+  <div class="w3-row-padding"> 
     
-    <!-- <img class="thumblist" style="border-radius:25%" src="/pig.jpg" />
+    
+    <div class="image-center" display="inline" text-align="center">
+    <img style="border-radius:50%;width:550px; height:322px" display="inline" src="/pig.jpg" />
 
-     <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" /> -->
-    <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" />
     <!-- <p>Caregiver First Name: <span data-bind="text: careGiverFirstName"> </span></p>
     <p>Last name: <span data-bind="text: careGiverLastName"> </span></p> -->
-    <p>First Name: <span data-bind="text: firstName"> </span></p>
-    <p>Last name: <span data-bind="text: lastName"> </span></p>
+    </div>
+        <div style="text-align: center;font-size: 200%;">
+  <span data-bind="text: firstName"> </span>
+        
+    <span data-bind="text: lastName"> </span></div>
 
-    <!-- <p>Age: <span data-bind="text: age"> </span></p>
-    <p>Uid: <span data-bind="text: uid"> </span></p> -->
-
+              <form action="" method="POST" name="reminder_form">
+          <textarea name="texter"></textarea><br>
+          <input type="submit" style="background-color:red;border:none; color:white;" value="Remind" name="remind_button">
+            </form>
+      
     
-    <!-- <div class="w3-half">
+      </div> 
 
-       <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" />
+      
+      
+      
+<?php 
+      
+   if (isset($_POST["texter"]))
+   {    
+       $remindtask = $_POST["texter"];
+       $response = $dynamodb->putItem([
+           'TableName' => 'tasks',
+           'Item' => [
+                'email' => ['S' => $email],
+                'task'  => ['S' => $remindtask],
+                'timestamp' => ['S' => date('Y-m-d H:i:s')],
+                
+       ]
+       ]);
+       
+   }
+?>
 
-       <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" onclick="onClick(this)" alt="Edward Foyle"/>
-    </div> -->
+      
+      
+
   </div>
 
   <!-- Modal for full size images on click-->
@@ -139,6 +169,9 @@ function onClick(element) {
   var captionText = document.getElementById("caption");
   captionText.innerHTML = element.alt;
 }
+  
+
+
 </script>
 
 

@@ -2,7 +2,7 @@
 
 // CHANGE THIS TO TRUE WHEN PUSHING LIVE
 // CHANGE TO FALSE WHEN USING LOCALHOST
-$LIVE = true;
+$LIVE = false;
 
 //if($LIVE && (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off")){
 //    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
