@@ -1,20 +1,41 @@
 <?php
 
+// CHANGE THIS TO TRUE WHEN PUSHING LIVE
+// CHANGE TO FALSE WHEN USING LOCALHOST
+$LIVE = true;
+
+//if($LIVE && (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off")){
+//    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+//    header('HTTP/1.1 301 Moved Permanently');
+//    header('Location: ' . $redirect);
+//    exit();
+//}
+////If the HTTPS is not found to be "on"
+//if($LIVE && (!isset($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on"))
+//{
+//    //Tell the browser to redirect to the HTTPS URL.
+//    header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+//    //Prevent the rest of the script from executing.
+//    exit;
+//}
+
 $params = strtok($_SERVER['REQUEST_URI'], '?');
 $params = explode("/", $params);
 $params = array_splice($params,1);
 //$params = array_map('strtolower', $params);
-
-// array_shift($params);
-// if(empty(end($params))){
-//     array_pop($params);
-// }
-if (empty($params) || strcmp($params[0], "home")==0) {
+include("handle_login.php");
+if (strcmp($params[0], "home")==0) {
+    $currUser = verifyLogin($_REQUEST, $LIVE);
+    if (!is_array($currUser)) {
+        header("Location: https://remembrall.me/login");
+        exit;
+    }
     include("home_screen.php");
 } else if (strcmp($params[0], "login")==0) {
     include("login_page.html");
-} else if (strcmp($params[0], "test")==0) {
-	include("home_page_queries.php");
+} else if ($LIVE) {
+    header("Location: https://remembrall.me/home");
+    exit;
 }
 
 // if(count($params)==3){
