@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>HomeScreen</title>
+<title>Interaction History</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/w3_style.css">
@@ -14,49 +14,9 @@ body {font-size:16px;}
 <body>
 
 <script type='text/javascript' src='knockout-3.4.1.js'></script>
-<!-- php code to dynamically populate the html-->
-<?php
-require 'vendor/autoload.php';
+ <!-- php code to dynamically populate the html-->
 
-date_default_timezone_set('America/New_York');
-    
-$sdk = new Aws\Sdk([
-    'region'   => 'us-east-1',
-    'version'  => 'latest',
-    'http' => ['verify' => false],
-    'credentials' => [
-        'key' => 'AKIAJWY4QFG6IBKEKPOA',
-        'secret' => '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'],
-]);
-
-if (empty($currUser['email'])) {
-  $email = 'wbroome14@gmail.com';
-} else {
-  $email = $currUser['email'];
-}
-$dynamodb = $sdk->createDynamoDb();
-$response = $dynamodb->query([
-    'TableName' => 'users',
-    'KeyConditionExpression' => 'email = :email',
-    'ExpressionAttributeValues' =>  [
-        ':email' => ['S' => $email]
-    ]
-]);
-
-$firstName = $response['Items'][0]['firstName']['S'];
-$lastName = $response['Items'][0]['lastName']['S'];
-    
-    
-
-   
-
-?>
-
-
-
-
-
-
+ 
  
 <!-- Sidenav/menu -->
 <nav class="w3-sidenav w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidenav"><br>
@@ -64,7 +24,7 @@ $lastName = $response['Items'][0]['lastName']['S'];
     <h3 class="w3-padding-64"><b>Remembrall<br></b></h3>
   </div>
     
-  <a href="#" onclick="w3_close()" class="w3-padding w3-hover-white">Home</a> 
+  <a href="home_screen.php" onclick="w3_close()" class="w3-padding w3-hover-white">Home</a> 
 
   <a href="history.php" onclick="w3_close()" class="w3-padding w3-hover-white">History</a> 
   <a href="settings.html" onclick="w3_close()" class="w3-padding w3-hover-white">Settings</a> 
@@ -86,58 +46,78 @@ $lastName = $response['Items'][0]['lastName']['S'];
 
   <!-- Header -->
   <div class="w3-container" style="margin-top:80px" id="showcase">
-    <h1 class="w3-jumbo"><b>What would you like to remind?</b></h1>
+    <h1 class="w3-jumbo"><b>Interaction History</b></h1>
 
     <hr style="width:50px;border:5px solid red" class="w3-round">
   </div>
   
   <!-- Photo grid (modal) *** THIS WILL HAVE TO BE POPULATED BY DB LATER ALSO INCLUDE SEARCH FUNCTION-->
-  <div class="w3-row-padding"> 
+  <div class="w3-row-padding">
     
+   
+    <img class="w3-image" style="border-radius:50%;max-width:50%" src="/pig.jpg" />
     
-    <div class="image-center" display="inline" text-align="center">
-    <img style="border-radius:50%;width:550px; height:322px" display="inline" src="/pig.jpg" />
 
-    <!-- <p>Caregiver First Name: <span data-bind="text: careGiverFirstName"> </span></p>
-    <p>Last name: <span data-bind="text: careGiverLastName"> </span></p> -->
-    </div>
-        <div style="text-align: center;font-size: 200%;">
-  <span data-bind="text: firstName"> </span>
-        
-    <span data-bind="text: lastName"> </span></div>
-
-              <form action="" method="POST" name="reminder_form">
-          <textarea name="texter"></textarea><br>
-          <input type="submit" style="background-color:red;border:none; color:white;" value="Remind" name="remind_button">
-            </form>
-      
-    
-      </div> 
-
-      
-      
-      
 <?php 
-      
-   if (isset($_POST["texter"]))
-   {    
-       $remindtask = $_POST["texter"];
-       $response = $dynamodb->putItem([
-           'TableName' => 'tasks',
-           'Item' => [
-                'email' => ['S' => $email],
-                'task'  => ['S' => $remindtask],
-                'timestamp' => ['S' => date('Y-m-d H:i:s')],
-                
-       ]
-       ]);
-       
-   }
+
+// getting stuff from database
+require 'vendor/autoload.php';
+
+$sdk = new Aws\Sdk([
+    'region'   => 'us-east-1',
+    'version'  => 'latest',
+    'http' => ['verify' => false],
+    'credentials' => [
+        'key' => 'AKIAJWY4QFG6IBKEKPOA',
+        'secret' => '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'],
+]);
+if (empty($currUser['email'])) {
+  $email = 'wbroome14@gmail.com';
+} else {
+  $email = $currUser['email'];
+}
+$dynamodb = $sdk->createDynamoDb();
+$response = $dynamodb->query([
+    'TableName' => 'tasks',
+    'KeyConditionExpression' => 'email = :email',
+    'ExpressionAttributeValues' =>  [
+        ':email' => ['S' => $email]
+    ]
+]);
+
+$response = $response['Items'];
+$array = array();
+for ($x = 0; $x < count($response); $x++) {
+	$array[$response[$x]['task']['S']] = $response[$x]['timestamp']['S'];
+}
+
+//array should be filled now
 ?>
 
-      
-      
 
+    
+<table>
+  <thead align="left" style="display: table-header-group">
+  <tr>
+     <th>Task </th>
+     <th>Time Created </th>
+  </tr>
+  </thead>
+<tbody>
+<?php 
+// $total = 0;
+//echo count($array);
+foreach ($array as $key=>$value) :?> 
+  <tr class="item_row">
+        <td> <?php echo $key; ?></td>
+        <td> <?php echo $value; ?></td>
+        <!-- <?php echo $total++; ?>; -->
+  </tr>
+  
+
+<?php endforeach;?>
+ </tbody>
+</table>   
   </div>
 
   <!-- Modal for full size images on click-->
@@ -169,17 +149,14 @@ function onClick(element) {
   var captionText = document.getElementById("caption");
   captionText.innerHTML = element.alt;
 }
-  
-
-
 </script>
 
 
 
 <script type="text/javascript">
 var clientViewModel = function(first, last) {
-    this.firstName = ko.observable("<?php echo $firstName;?>");
-    this.lastName = ko.observable("<?php echo $lastName;?>");
+    this.task = ko.observable("<?php echo $task;?>");
+    this.time = ko.observable("<?php echo $time;?>");
 };
  
 ko.applyBindings(new clientViewModel());
