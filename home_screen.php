@@ -22,6 +22,7 @@ require 'vendor/autoload.php';
 $sdk = new Aws\Sdk([
     'region'   => 'us-east-1',
     'version'  => 'latest',
+    'http' => ['verify' => false],
     'credentials' => [
         'key' => 'AKIAIXF4IAK25EI56ZLA',
         'secret' => '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']
