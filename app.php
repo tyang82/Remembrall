@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>HomeScreen</title>
+<title>Remembrall</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/w3_style.css">
@@ -14,27 +14,11 @@ body {font-size:16px;}
 <body>
 
 <script type='text/javascript' src='knockout-3.4.1.js'></script>
+
 <!-- php code to dynamically populate the html-->
 <?php
-require 'vendor/autoload.php';
-
-date_default_timezone_set('America/New_York');
-    
-$sdk = new Aws\Sdk([
-    'region'   => 'us-east-1',
-    'version'  => 'latest',
-    'http' => ['verify' => false],
-    'credentials' => [
-        'key' => '',
-        'secret' => ''],
-]);
-
-if (empty($currUser['email'])) {
-  $email = 'wbroome14@gmail.com';
-} else {
-  $email = $currUser['email'];
-}
-$dynamodb = $sdk->createDynamoDb();
+$dynamodb = $currUser['db'];
+$email = $currUser['email'];
 $response = $dynamodb->query([
     'TableName' => 'users',
     'KeyConditionExpression' => 'email = :email',
@@ -42,22 +26,10 @@ $response = $dynamodb->query([
         ':email' => ['S' => $email]
     ]
 ]);
-
 $firstName = $response['Items'][0]['firstName']['S'];
 $lastName = $response['Items'][0]['lastName']['S'];
-    
-    
-
-   
-
 ?>
 
-
-
-
-
-
- 
 <!-- Sidenav/menu -->
 <nav class="w3-sidenav w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidenav"><br>
   <div class="w3-container">
@@ -112,11 +84,7 @@ $lastName = $response['Items'][0]['lastName']['S'];
             </form>
       
     
-      </div> 
-
-      
-      
-      
+      </div>   
 <?php 
       
    if (isset($_POST["texter"]))
@@ -127,17 +95,11 @@ $lastName = $response['Items'][0]['lastName']['S'];
            'Item' => [
                 'email' => ['S' => $email],
                 'task'  => ['S' => $remindtask],
-                'timestamp' => ['S' => date('Y-m-d H:i:s')],
-                
+                'timestamp' => ['S' => date('Y-m-d H:i:s')],    
        ]
        ]);
-       
    }
 ?>
-
-      
-      
-
   </div>
 
   <!-- Modal for full size images on click-->

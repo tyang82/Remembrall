@@ -26,34 +26,16 @@ body {font-size:16px;background-image: url("/login_background3.jpg");}
     })(document);
 
  </script>
-    
-    
-    
-    
-   
-    
-    
-    
-    
     <div class="login-page" style="margin-left:25%;margin-right:25%">
     <!-- Header -->
         <div class="w3-container" style="margin-top:30px" id="showcase">
         <h1 class="w3-xxlarge w3-text-red"><b>Remembrall</b></h1>
         <hr style="width:auto;border:4px solid red" class="w3-round">
-            <h1 class="w3-xlarge w3-text-black"><b>Remembrall, Never Forget.</b></h1>
+            <h1 class="w3-xlarge w3-text-black"><b>Never Forget.</b></h1>
         </div>
         <div class="w3-container">
-    <p>We are a interior design service that focus on what's best for your home and what's best for you!</p>
-    <p>Some text about our services - what we do and what we offer. We are lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    </p>
-        
-  
-        
-        
-        
-       
+    <p>If you're tired of forgetting everyday things, let Remembrall keep track for you.</p>
+    <p>To get started, login to your Amazon account below: </p>
          <div class="login" style="text-align: center; padding-top:10%;">
             <a href id="LoginWithAmazon">
                 <img border="0" alt="Login with Amazon"
@@ -63,21 +45,18 @@ body {font-size:16px;background-image: url("/login_background3.jpg");}
                
         </div>
     </div>
-
-
-
-
 <script type="text/javascript">
 
     document.getElementById('LoginWithAmazon').onclick = function() {
         var live = "<?php echo $LIVE; ?>";
+        var host = window.location.hostname;
         if (live === "1") {
             options = { scope : 'profile' };
             amazon.Login.authorize(options,
-                'https://remembrall.me/home');
+                "https://" + host + "/app");
             return false;
         } else {
-            window.location.href = "https://localhost/home";
+            window.location.href = "https://" + host + "/app";
             return false;
         }
     };

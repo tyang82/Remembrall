@@ -59,37 +59,39 @@ body {font-size:16px;}
     
 
 <?php 
-
-// getting stuff from database
-require 'vendor/autoload.php';
-
-$sdk = new Aws\Sdk([
-    'region'   => 'us-east-1',
-    'version'  => 'latest',
-    'http' => ['verify' => false],
-    'credentials' => [
-        'key' => 'AKIAJWY4QFG6IBKEKPOA',
-        'secret' => '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'],
-]);
-if (empty($currUser['email'])) {
-  $email = 'wbroome14@gmail.com';
-} else {
-  $email = $currUser['email'];
-}
-$dynamodb = $sdk->createDynamoDb();
-$response = $dynamodb->query([
-    'TableName' => 'tasks',
-    'KeyConditionExpression' => 'email = :email',
-    'ExpressionAttributeValues' =>  [
-        ':email' => ['S' => $email]
-    ]
-]);
-
-$response = $response['Items'];
-$array = array();
-for ($x = 0; $x < count($response); $x++) {
-	$array[$response[$x]['task']['S']] = $response[$x]['timestamp']['S'];
-}
+// TODO need to update this so it is part of app.php
+// use login credentials returned from initial call to handle_login.php
+      
+//// getting stuff from database
+//require 'vendor/autoload.php';
+//
+//$sdk = new Aws\Sdk([
+//    'region'   => 'us-east-1',
+//    'version'  => 'latest',
+//    'http' => ['verify' => false],
+//    'credentials' => [
+//        'key' => 'REDACTED',
+//        'secret' => 'REDACTED'],
+//]);
+//if (empty($currUser['email'])) {
+//  $email = 'wbroome14@gmail.com';
+//} else {
+//  $email = $currUser['email'];
+//}
+//$dynamodb = $sdk->createDynamoDb();
+//$response = $dynamodb->query([
+//    'TableName' => 'tasks',
+//    'KeyConditionExpression' => 'email = :email',
+//    'ExpressionAttributeValues' =>  [
+//        ':email' => ['S' => $email]
+//    ]
+//]);
+//
+//$response = $response['Items'];
+//$array = array();
+//for ($x = 0; $x < count($response); $x++) {
+//	$array[$response[$x]['task']['S']] = $response[$x]['timestamp']['S'];
+//}
 
 //array should be filled now
 ?>
