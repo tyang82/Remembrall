@@ -25,8 +25,8 @@ $sdk = new Aws\Sdk([
     'version'  => 'latest',
     'http' => ['verify' => false],
     'credentials' => [
-        'key' => '',
-        'secret' => ''],
+        'key' => 'AKIAJCO673NIUUYTVVZQ',
+        'secret' => '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'],
 ]);
 
 if (empty($currUser['email'])) {
