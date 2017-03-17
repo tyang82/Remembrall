@@ -1,8 +1,8 @@
 <?php
-
 // CHANGE THIS TO TRUE WHEN PUSHING LIVE
-// CHANGE TO FALSE WHEN USING LOCALHOST
-$LIVE = false;
+// CHANGE TO FALSE WHEN USING LOCALHOST/DEBUGGING
+// (unless you are debugging login, in which case, may God have mercy on your soul)
+$LIVE = true;
 
 //if($LIVE && (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off")){
 //    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -22,51 +22,20 @@ $LIVE = false;
 $params = strtok($_SERVER['REQUEST_URI'], '?');
 $params = explode("/", $params);
 $params = array_splice($params,1);
-//$params = array_map('strtolower', $params);
 include("handle_login.php");
-if (strcmp($params[0], "home")==0) {
+if (strcmp($params[0], "app") == 0) {
     $currUser = verifyLogin($_REQUEST, $LIVE);
-    if (!is_array($currUser)) {
-        header("Location: https://remembrall.me/login");
-        exit;
+    if ($currUser) { // if the login was good
+        include("app.php");
+    } else if ($LIVE) { // otherwise, if we're live, take them to login
+        header("Location: https://" . gethostname() . "/login");
+    } else { // this shouldn't happen
+        echo "Invalid default credentials";
     }
-    include("home_screen.php");
-} else if (strcmp($params[0], "login")==0) {
-    include("login_page.html");
-} else if ($LIVE) {
-    header("Location: https://remembrall.me/home");
+} else if (strcmp($params[0], "login") == 0) {
+    include("login.html");
+} else if ($LIVE) { // if we're live and something weird happens, go home
+    header("Location: https://" . gethostname() . "/app");
     exit;
 }
-
-// if(count($params)==3){
-//     $focus_topic = $params[0];
-//     $question_type = $params[1];
-//     $sequence_number = intval($params[2]);
-//     $question_list = getQuestionList($conn);
-//     $question_data = getQuestion($conn, $focus_topic, $question_type, $sequence_number);
-//     include("./content/multiple_choice.php");
-// } else if(count($params)>1 && strcmp($params[0], "focus")==0) {
-//     $focus_topic = $params[1];
-//     if(count($params)==4){
-//         $seq_num = intval($params[3]);
-//     }else{
-//         $seq_num = 1;
-//     }
-//     $data = getFocusList($conn, $focus_topic, $seq_num);
-//     $focus_list = $data["results"];
-//     $question_id = $data["question_id"];
-//     $prev_question = $data["prev_question"];
-//     $next_question = $data["next_question"];
-//     $rand_question = $data["rand_question"];
-
-//     $question_data = getFocusQuestion($conn, $question_id, $seq_num, $focus_topic, $prev_question, $next_question, $rand_question);
-//     $focus_options = getFocusOptions($conn);
-//     include("./content/focus.php");
-// } else {
-//     $question_list = getQuestionList($conn);
-//     include("./content/home.php");
-// }
-
-// killConnection($conn);
-
 ?>

@@ -1,32 +1,38 @@
 <?php
 function verifyLogin($req, $live) {
     if (!$live) {
-        return array("name" => "Tommy Lee Jones", "email" => "wbroome14@gmail.com", "id" => "thisIsAGarbageString");
+        $d = array("name" => "Local Host", "email" => "local@host.com", "id" => "locoLocalHost");
+    } else {
+        // verify that the access token belongs to us
+        $r = file_get_contents('https://api.amazon.com/auth/o2/tokeninfo?access_token=' . urlencode($req['access_token']));
+        $d = json_decode($r);
+
+        if ($d->aud != 'amzn1.application-oa2-client.60c59c23ce9a415abeff731d5078dc81') {
+            // the access token does not belong to us
+            return false;
+        }
+
+        // exchange the access token for user profile
+        $r = file_get_contents('https://api.amazon.com/user/profile?access_token=' . urlencode($req['access_token']));
+        $d = json_decode($r);
     }
-    // verify that the access token belongs to us
-    $c = curl_init('https://api.amazon.com/auth/o2/tokeninfo?access_token=' . urlencode($req['access_token']));
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-
-    $r = curl_exec($c);
-    curl_close($c);
-    $d = json_decode($r);
-
-    if ($d->aud != 'amzn1.application-oa2-client.60c59c23ce9a415abeff731d5078dc81') {
-        // the access token does not belong to us
-        print_r("invalid");
-        return "INVALID USER";
-    }
-
-    // exchange the access token for user profile
-    $c = curl_init('https://api.amazon.com/user/profile');
-    curl_setopt($c, CURLOPT_HTTPHEADER, array('Authorization: bearer ' . $req['access_token']));
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-
-    $r = curl_exec($c);
-    curl_close($c);
-    $d = json_decode($r);
-
-//    echo sprintf('%s %s %s', $d->name, $d->email, $d->user_id);
-    return array("name" => $d->name, "email" => $d->email, "id" => $d->user_id);
+    
+    // now extablish db connection
+    require 'vendor/autoload.php';
+    date_default_timezone_set('America/New_York');
+    $sdk = new Aws\Sdk([
+        'region'   => 'us-east-1',
+        'version'  => 'latest',
+        'http' => ['verify' => false],
+        'credentials' => [
+            // DO NOT EVER PUT THIS INFO IN ANY OTHER FILE
+            // DO NOT EVER PUSH THIS INFO TO GITHUB OR ANY OTHER PUBLIC PLACE ON THE WEB
+            'key' => 'REDACTED',
+            'secret' => 'REDACTED'],
+    ]);
+    $dynamodb = $sdk->createDynamoDb();
+    
+    // return the profile info and db connection object
+    return array("name" => $d->name, "email" => $d->email, "id" => $d->user_id, "db" => $dynamodb);
 }
 ?>
