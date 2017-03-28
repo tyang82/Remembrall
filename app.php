@@ -40,10 +40,10 @@ $lastName = $response['Items'][0]['lastName']['S'];
     
   <a href="#" onclick="w3_close()" class="w3-padding w3-hover-white">Home</a> 
 
-  <a href="history.php" onclick="w3_close()" class="w3-padding w3-hover-white">History</a> 
-  <a href="settings.html" onclick="w3_close()" class="w3-padding w3-hover-white">Settings</a> 
-  <a href="#packages" onclick="w3_close()" class="w3-padding w3-hover-white">Sign Out</a> 
-  <a href="#contact" onclick="w3_close()" class="w3-padding w3-hover-white">Contact</a>
+  <a href="#home" onclick="w3_close()" class="w3-padding w3-hover-white">Home</a> 
+  <a href="#history" onclick="w3_close()" class="w3-padding w3-hover-white">History</a> 
+  <a href="#settings" onclick="w3_close()" class="w3-padding w3-hover-white">Settings</a> 
+  
 </nav>
 
 <!-- Top menu on small screens -->
@@ -58,36 +58,20 @@ $lastName = $response['Items'][0]['lastName']['S'];
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:340px;margin-right:40px">
 
-  <!-- Header -->
-  <div class="w3-container" style="margin-top:80px" id="showcase">
-    <h1 class="w3-jumbo"><b>What would you like to remind?</b></h1>
-
+  <!-- Home: what are you doing -->
+  <a name="home"></a>
+  <div class="w3-container" style="margin-top:80px" id="home">
+    <h1 class="w3-jumbo"><b>What are you doing?</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
-  </div>
-  
-  <!-- Photo grid (modal) *** THIS WILL HAVE TO BE POPULATED BY DB LATER ALSO INCLUDE SEARCH FUNCTION-->
-  <div class="w3-row-padding"> 
-    
-    
-    <div class="image-center" display="inline" text-align="center">
-    <img style="border-radius:50%;width:550px; height:322px" display="inline" src="/pig.jpg" />
-
-    <!-- <p>Caregiver First Name: <span data-bind="text: careGiverFirstName"> </span></p>
-    <p>Last name: <span data-bind="text: careGiverLastName"> </span></p> -->
-    </div>
-        <div style="text-align: center;font-size: 200%;">
-  <span data-bind="text: firstName"> </span>
-        
-    <span data-bind="text: lastName"> </span></div>
-
-              <form action="" method="POST" name="reminder_form">
+      
+      
+       <form action="" method="POST" name="reminder_form">
           <textarea name="texter"></textarea><br>
           <input type="submit" style="background-color:red;border:none; color:white;" value="Remind" name="remind_button">
             </form>
-      
-    
-      </div>   
-<?php 
+  </div>
+    <!-- php code for submit -->
+    <?php 
       
    if (isset($_POST["texter"]))
    {    
@@ -102,7 +86,33 @@ $lastName = $response['Items'][0]['lastName']['S'];
        ]);
    }
 ?>
-  </div>
+
+<!-- History -->
+  <a name="history"></a>
+<div class="w3-container" style="margin-top:80px" id="history">
+    <h1 class="w3-jumbo"><b>History</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+     
+    <!--code for history here -->
+    
+</div>
+    
+
+<!-- Settings -->
+  <a name="settings"></a>
+<div class="w3-container" style="margin-top:80px" id="settings">
+    <h1 class="w3-jumbo"><b>Settings</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+     
+    <!--code for settings here -->
+    
+</div>
+    
+    
+    
+    
+  
+</div>
 
   <!-- Modal for full size images on click-->
   <div id="modal01" class="w3-modal w3-black w3-padding-0" onclick="this.style.display='none'">
