@@ -123,7 +123,58 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
     <h1 class="w3-jumbo"><b>History</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
      
-    <!--code for history here -->
+<!-- PHP code for loading the Alexa set reminder -->
+<?php
+// echo $acct_email;
+// echo $care_receiver_name;
+$alexa_in_moment_response = $dynamodb->query([
+    'TableName' => 'reminders',
+    'KeyConditionExpression' => 'acct_email = :email',
+    'ExpressionAttributeValues' =>  [
+        ':email' => ['S' => $acct_email]
+
+    ]
+]);
+$alexa_in_moment_response = $alexa_in_moment_response['Items'];
+$array = array();
+
+for ($x = 0; $x < count($alexa_in_moment_response); $x++) {
+	// key value pair task (text) -> timestamp
+	// only query the self assigned ones! self_flag will essentually be a primary key 
+	if ($alexa_in_moment_response[$x]['self_flag']['BOOL'] == true) {
+		$array[$alexa_in_moment_response[$x]['text']['S']] = $alexa_in_moment_response[$x]['timestamp']['S'];
+	}
+}
+?>
+     
+     
+    <h1>Instant Task Reminder History for Today</h1>
+    <table>
+		<tr>
+    		<th>Tasks</th>
+    		<th>Time Stamps</th>
+  		</tr>
+  		<!-- php code to load each of the entries --> 	
+
+		<?php 
+			foreach ($array as $key=>$value) :?> 
+  				<tr class="item_row">
+        			<td> <?php echo $key; ?></td>
+        			<td> <?php echo $value; ?></td>
+  				</tr>
+		<?php endforeach;?>
+
+		<!-- php code to load each of the entries ENDS! -->
+
+	</table>
+	
+<h1>Family Members' Tasks Today</h1>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Tasks</th>
+		</tr>
+	</table>
     
 </div>
     
