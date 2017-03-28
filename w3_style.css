@@ -447,13 +447,10 @@ input[type="text"]  {
     text-align: center;
     
 }
+
 table {
-    border-collapse: collapse;
     width: 100%;
 }
-
-th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+table, td, th {
+    border: 1px solid black;
 }
