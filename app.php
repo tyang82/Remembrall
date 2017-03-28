@@ -71,10 +71,10 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
   <!-- Home: what are you doing -->
   <a name="home"></a>
   <div class="w3-container" style="margin-top:80px" id="home">
-    <h1 class="w3-xxxlarge"><b>Let <strong data-bind="text: care_receiver_name"></strong> know what you're doing</b></h1>
+    <h1 class="w3-xxxlarge"><b>Remembrall Home</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
       
-      
+      <h1><b>Let <strong data-bind="text: care_receiver_name"></strong> know what you're doing</b></h1>
        <form action="" method="POST" name="reminder_form">
          
                <textarea name="status_submit" placeholder="What are you doing?"></textarea>
@@ -125,7 +125,7 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
 <!-- History -->
   <a name="history"></a>
 <div class="w3-container" style="margin-top:80px" id="history">
-    <h1 class="w3-jumbo"><b>History</b></h1>
+    <h1 class="w3-xxxlarge"><b>History</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
      
 <!-- PHP code for loading the Alexa set reminder -->
@@ -207,7 +207,7 @@ $family_schedule = $family_schedule['Items'];
 <!-- Settings -->
   <a name="settings"></a>
 <div class="w3-container" style="margin-top:80px" id="settings">
-    <h1 class="w3-jumbo"><b>Settings</b></h1>
+    <h1 class="w3-xxxlarge"><b>Settings</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
      
     <!--code for settings here -->
