@@ -128,7 +128,11 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
 <div class="w3-container" style="margin-top:80px" id="history">
     <h1 class="w3-xxxlarge"><b>History</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
-     
+<?php
+	$date = date('m/d/Y');
+?>
+	<h4>Today's Date is: <?php echo $date ?> </h4>
+
 <!-- PHP code for loading the Alexa set reminder -->
 <?php
 // echo $acct_email;
@@ -188,9 +192,6 @@ $family_schedule = $family_schedule['Items'];
 		</tr>
 		<!-- php code to load each of the entries --> 	
 		<?php 
-			$date = date('m/d/Y');
-			echo 'Today\'s Date is: ';
-			echo $date;
 			for ($x = 0; $x < count($family_schedule); $x++) {?> 
   				<tr class="item_row">
   					<?php
