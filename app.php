@@ -53,6 +53,7 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
   <a href="#" onclick="w3_close()" class="w3-padding w3-hover-white">Home</a> 
   <a href="#history" onclick="w3_close()" class="w3-padding w3-hover-white">History</a> 
   <a href="#settings" onclick="w3_close()" class="w3-padding w3-hover-white">Settings</a> 
+  <a href="https://remembrall.me/login" onclick="w3_close()"class="w3-padding w3-hover-white">Logout</a>
   
 </nav>
 
