@@ -95,9 +95,6 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
    {    
        $remindtask = $_POST["status_submit"];
        $date = $_POST['datepicker'];
-       echo $date;
-       echo $remindtask;
-       echo $care_giver_name;
         $response = $dynamodb->putItem([
            'TableName' => 'statuses',
            'Item' => [
