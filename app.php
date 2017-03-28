@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/w3_style.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="/jquery.css">
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
 body {font-size:16px;}
@@ -31,6 +31,7 @@ $first_response = $dynamodb->query([
 ]);
 
 $acct_email = $first_response['Items'][0]['acct_email']['S'];
+$care_giver_name = $first_response['Items'][0]['name']['S'];
     
 $response = $dynamodb->query([
     'TableName' => 'care_receivers',
@@ -75,42 +76,49 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
       
       
        <form action="" method="POST" name="reminder_form">
-          <textarea name="texter"></textarea><br>
+         
+               <textarea name="status_submit">What are you doing?</textarea>
+           <input type="text" value="When?" id="datepicker" name="datepicker" class="datepick">
+         
+          
           <input type="submit" style="background-color:red;border:none; color:white;" value="Remind" name="remind_button">
-            </form>
-      
-      <form>
-        <input id="tb" type="text" style="width:500px; height:500px;">
-        <input id="datepicker" />
-      </form>
+        </form>
+ 
       
      
 
   </div>
     <!-- php code for submit -->
-    <!-- ?php 
+    <?php 
       
-   if (isset($_POST["texter"]))
+   if (isset($_POST["status_submit"]))
    {    
-       $remindtask = $_POST["texter"];
-       $response = $dynamodb->putItem([
-           'TableName' => 'tasks',
+       $remindtask = $_POST["status_submit"];
+       $date = $_POST['datepicker'];
+       echo $date;
+       echo $remindtask;
+       echo $care_giver_name;
+        $response = $dynamodb->putItem([
+           'TableName' => 'statuses',
            'Item' => [
-                'email' => ['S' => $email],
-                'task'  => ['S' => $remindtask],
-                'timestamp' => ['S' => date('Y-m-d H:i:s')],    
-       ]
+                'acct_email' => ['S' => $acct_email],
+                'care_giver_email' => ['S' => $care_giver_email],
+                'name' => ['S' => $care_giver_name],
+                'text'  => ['S' => $remindtask],
+               'timestamp' => ['S' => date('Y-m-d H:i:s')],
+                'day' => ['S' => $date ]
+                
+            ]
        ]);
+      
    }
-?-->
+?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
   
   <script>
   $(document).ready(function() {
     $("#datepicker").datepicker();
-    $('#tb').textbox();
-      
   });
 
   </script>
