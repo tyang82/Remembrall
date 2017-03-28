@@ -77,8 +77,8 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
       
        <form action="" method="POST" name="reminder_form">
          
-               <textarea name="status_submit">What are you doing?</textarea>
-           <input type="text" value="When?" id="datepicker" name="datepicker" class="datepick">
+               <textarea name="status_submit" placeholder="What are you doing?"></textarea>
+           <input type="text" placeholder="When?" id="datepicker" name="datepicker" class="datepick">
          
           
           <input type="submit" style="background-color:red;border:none; color:white;" value="Remind" name="remind_button">
