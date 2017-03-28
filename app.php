@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/w3_style.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
 body {font-size:16px;}
@@ -19,17 +20,27 @@ body {font-size:16px;}
 <?php
 
 $dynamodb = $currUser['db'];
-$email = $currUser['email'];
-
-$response = $dynamodb->query([
-    'TableName' => 'users',
-    'KeyConditionExpression' => 'email = :email',
+$care_giver_email = $currUser['email'];
+    
+$first_response = $dynamodb->query([
+    'TableName' => 'care_givers',
+    'KeyConditionExpression' => 'care_giver_email = :email',
     'ExpressionAttributeValues' =>  [
-        ':email' => ['S' => $email]
+        ':email' => ['S' => $care_giver_email]
     ]
 ]);
-$firstName = $response['Items'][0]['firstName']['S'];
-$lastName = $response['Items'][0]['lastName']['S'];
+
+$acct_email = $first_response['Items'][0]['acct_email']['S'];
+    
+$response = $dynamodb->query([
+    'TableName' => 'care_receivers',
+    'KeyConditionExpression' => 'acct_email = :email',
+    'ExpressionAttributeValues' =>  [
+        ':email' => ['S' => $acct_email]
+    ]
+]);
+    
+$care_receiver_name = $response['Items'][0]['name']['S'];
 ?>
 
 <!-- Sidenav/menu -->
@@ -39,8 +50,6 @@ $lastName = $response['Items'][0]['lastName']['S'];
   </div>
     
   <a href="#" onclick="w3_close()" class="w3-padding w3-hover-white">Home</a> 
-
-  <a href="#home" onclick="w3_close()" class="w3-padding w3-hover-white">Home</a> 
   <a href="#history" onclick="w3_close()" class="w3-padding w3-hover-white">History</a> 
   <a href="#settings" onclick="w3_close()" class="w3-padding w3-hover-white">Settings</a> 
   
@@ -61,7 +70,7 @@ $lastName = $response['Items'][0]['lastName']['S'];
   <!-- Home: what are you doing -->
   <a name="home"></a>
   <div class="w3-container" style="margin-top:80px" id="home">
-    <h1 class="w3-jumbo"><b>What are you doing?</b></h1>
+    <h1 class="w3-xxxlarge"><b>Let <strong data-bind="text: care_receiver_name"></strong> know what you're doing</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
       
       
@@ -69,9 +78,17 @@ $lastName = $response['Items'][0]['lastName']['S'];
           <textarea name="texter"></textarea><br>
           <input type="submit" style="background-color:red;border:none; color:white;" value="Remind" name="remind_button">
             </form>
+      
+      <form>
+        <input id="tb" type="text" style="width:500px; height:500px;">
+        <input id="datepicker" />
+      </form>
+      
+     
+
   </div>
     <!-- php code for submit -->
-    <?php 
+    <!-- ?php 
       
    if (isset($_POST["texter"]))
    {    
@@ -85,7 +102,20 @@ $lastName = $response['Items'][0]['lastName']['S'];
        ]
        ]);
    }
-?>
+?-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  
+  <script>
+  $(document).ready(function() {
+    $("#datepicker").datepicker();
+    $('#tb').textbox();
+      
+  });
+
+  </script>
+    
+    
 
 <!-- History -->
   <a name="history"></a>
@@ -149,15 +179,14 @@ function onClick(element) {
 </script>
 
 
-
 <script type="text/javascript">
-var clientViewModel = function(first, last) {
-    this.firstName = ko.observable("<?php echo $firstName;?>");
-    this.lastName = ko.observable("<?php echo $lastName;?>");
+var clientViewModel = function(care_receiver_name) {
+    this.care_receiver_name = ko.observable("<?php echo $care_receiver_name;?>");
 };
  
 ko.applyBindings(new clientViewModel());
 </script>
+
 
 </body>
 </html>
