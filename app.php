@@ -132,7 +132,6 @@ $alexa_in_moment_response = $dynamodb->query([
     'KeyConditionExpression' => 'acct_email = :email',
     'ExpressionAttributeValues' =>  [
         ':email' => ['S' => $acct_email]
-
     ]
 ]);
 $alexa_in_moment_response = $alexa_in_moment_response['Items'];
@@ -142,40 +141,61 @@ for ($x = 0; $x < count($alexa_in_moment_response); $x++) {
 	// key value pair task (text) -> timestamp
 	// only query the self assigned ones! self_flag will essentually be a primary key 
 	if ($alexa_in_moment_response[$x]['self_flag']['BOOL'] == true) {
-		$array[$alexa_in_moment_response[$x]['text']['S']] = $alexa_in_moment_response[$x]['timestamp']['S'];
+		$array[$alexa_in_moment_response[$x]['timestamp']['S']] = $alexa_in_moment_response[$x]['text']['S'];
 	}
 }
 ?>
-     
-     
+  
     <h1>Instant Task Reminder History for Today</h1>
     <table>
 		<tr>
     		<th>Tasks</th>
     		<th>Time Stamps</th>
   		</tr>
+  		
   		<!-- php code to load each of the entries --> 	
-
 		<?php 
 			foreach ($array as $key=>$value) :?> 
   				<tr class="item_row">
-        			<td> <?php echo $key; ?></td>
         			<td> <?php echo $value; ?></td>
+        			<td> <?php echo $key; ?></td>
   				</tr>
 		<?php endforeach;?>
-
 		<!-- php code to load each of the entries ENDS! -->
-
 	</table>
 	
+<?php
+$family_schedule = $dynamodb->query([
+    'TableName' => 'statuses',
+    'KeyConditionExpression' => 'acct_email = :email',
+    'ExpressionAttributeValues' =>  [
+        ':email' => ['S' => $acct_email]
+    ]
+]);
+$family_schedule = $family_schedule['Items'];
+?>
 <h1>Family Members' Tasks Today</h1>
 	<table>
 		<tr>
 			<th>Name</th>
 			<th>Tasks</th>
 		</tr>
+		<!-- php code to load each of the entries --> 	
+		<?php 
+			$date = date('m/d/Y');
+			echo 'Today\'s Date is: ';
+			echo $date;
+			for ($x = 0; $x < count($family_schedule); $x++) {?> 
+  				<tr class="item_row">
+  					<?php
+  						if ($date == $family_schedule[$x]['day']['S']) { ?>
+        					<td> <?php echo $family_schedule[$x]['name']['S']; ?></td>
+        					<td> <?php echo $family_schedule[$x]['text']['S']; ?></td>
+        			<?php } ?>
+  				</tr>
+		<?php }?>
+		<!-- php code to load each of the entries ENDS! -->
 	</table>
-    
 </div>
     
 
@@ -224,7 +244,6 @@ function onClick(element) {
   var captionText = document.getElementById("caption");
   captionText.innerHTML = element.alt;
 }
-  
 
 
 </script>
