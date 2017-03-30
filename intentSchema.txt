@@ -1,0 +1,50 @@
+{
+  "intents": [
+    {
+      "intent": "SetImmediateReminderIntent",
+      "slots": [
+        {
+          "name": "action",
+          "type": "AMAZON.LITERAL"
+        }
+      ]
+    },
+    {
+      "intent": "RecallImmediateReminderIntent"
+    },
+    {
+      "intent": "GetStatusIntent",
+      "slots": [
+        {
+          "name": "person",
+          "type": "AMAZON.US_FIRST_NAME"
+        },
+        {
+          "name": "when",
+          "type": "AMAZON.DATE"
+        }
+      ]
+    },
+    {
+      "intent": "SetCaregiverReminderIntent",
+      "slots": [
+        {
+          "name": "person",
+          "type": "AMAZON.US_FIRST_NAME"
+        },
+        {
+          "name": "task",
+          "type": "AMAZON.LITERAL"
+        },
+        {
+          "name": "day",
+          "type": "AMAZON.DATE"
+        },
+        {
+          "name": "time",
+          "type": "AMAZON.TIME"
+        }
+      ]
+    }
+  ]
+}

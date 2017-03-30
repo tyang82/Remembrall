@@ -1,0 +1,62 @@
+SetImmediateReminderIntent I need to {do the laundry | action}
+SetImmediateReminderIntent I want to {do laundry | action}
+SetImmediateReminderIntent to remind me to {do laundry | action} later
+SetImmediateReminderIntent I'm going to {do the laundry | action}
+SetImmediateReminderIntent I'll {do some laundry | action}
+SetImmediateReminderIntent I need to {do some laundry | action} later
+SetImmediateReminderIntent that I want to {do some laundry | action} later today
+SetImmediateReminderIntent that I'm going to {wash my clothes | action}
+SetImmediateReminderIntent I'm going to {wash clothes | action}
+SetImmediateReminderIntent that I need to {do the laundry | action}
+SetImmediateReminderIntent that I want to {do the laundry | action}
+SetImmediateReminderIntent I'm going to {do the laundry | action}
+SetImmediateReminderIntent I am going to {do the laundry | action}
+SetImmediateReminderIntent I'll {do the laundry | action} in a bit
+
+SetImmediateReminderIntent I need to {do the dishes | action}
+SetImmediateReminderIntent I want to {do dishes | action}
+SetImmediateReminderIntent to remind me to {do dishes | action} later
+SetImmediateReminderIntent I'm going to {do the dishes | action}
+SetImmediateReminderIntent I'll {do some dishes | action}
+SetImmediateReminderIntent I need to {do some dishes | action} later
+SetImmediateReminderIntent that I want to {do some dishes | action} later today
+SetImmediateReminderIntent that I'm going to {wash my clothes | action}
+SetImmediateReminderIntent I'm going to {wash clothes | action}
+SetImmediateReminderIntent that I need to {do the dishes | action}
+SetImmediateReminderIntent that I want to {do the dishes | action}
+SetImmediateReminderIntent I'm going to {do the dishes | action}
+SetImmediateReminderIntent I am going to {do the dishes | action}
+SetImmediateReminderIntent I'll {do the dishes | action} in a bit
+
+SetImmediateReminderIntent that I need to {take my pills | action}
+SetImmediateReminderIntent I'm going to {take my pills | action}
+SetImmediateReminderIntent that I want to {take my pills | action}
+SetImmediateReminderIntent that I'm going to {take my medication | action}
+SetImmediateReminderIntent I need to {take my medication | action}
+SetImmediateReminderIntent that I want to {take my medication | action}
+
+RecallImmediateReminderIntent what was I going to do
+RecallImmediateReminderIntent what I was going to do
+RecallImmediateReminderIntent what am I doing
+RecallImmediateReminderIntent what was I doing
+RecallImmediateReminderIntent what did I just tell you to remember
+RecallImmediateReminderIntent what are you going to remind me of
+RecallImmediateReminderIntent I forgot what I was doing
+RecallImmediateReminderIntent I don't remmeber what I am doing
+RecallImmediateReminderIntent I don't remember what I was doing
+
+GetStatusIntent what is {person} doing {when}
+GetStatusIntent what is {person} up to {when}
+GetStatusIntent how is {person}
+GetStatusIntent how is {person} {when}
+GetStatusIntent what {person} is doing {when}
+GetStatusIntent what {person} is up to
+GetStatusIntent how {person} is doing {when}
+GetStatusIntent hwo {person} is
+
+SetCaregiverReminderIntent tell {person} that I need {bread from the grocery store | task}
+SetCaregiverReminderIntent I need {milk | task}
+SetCaregiverReminderIntent I'm almost {out of my medication | task}
+SetCaregiverReminderIntent let {person} know I need {milk | task} by {day}
+SetCaregiverReminderIntent let {person} know I need {milk | task} by {day} at {time}
+SetCaregiverReminderIntent tell {person} that I need help {doing my taxes | task} {day}
