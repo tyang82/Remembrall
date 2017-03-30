@@ -295,7 +295,7 @@ $family_schedule = $family_schedule['Items'];
     <hr style="width:50px;border:5px solid red" class="w3-round">
      
     <!--code for settings here -->
-<<<<<<< HEAD
+
     <h1 id="editCareGiver">Edit Caregivers</h1>
     
     <?php
@@ -343,16 +343,6 @@ $family_schedule = $family_schedule['Items'];
     
     
     
-    
-=======
-<h1 id="editCare">Edit Caregivers</h1>
-<table id="care_giver_table"></table>
-<button id="add_care_giver" type="submit" style="background-color:red;border:none; color:white;" onclick="addCareGiverPopUp()">Add Caregiver</button>
-
-
-    
-    
-
 
 </div>
     
@@ -446,7 +436,7 @@ function populateCareGiverTable() {
     document.getElementById("care_giver_table").innerHTML = "<tr><th>Name</th><th>Email</th><th>Remove</th></tr><?php for ($x = 0; $x < count($array); $x++) {?> <tr class=\"item_row\"><td> <?php echo $array[$x]['name']['S']; ?></td><td id=\"care_giver_row_<?php echo $x ?>\"> <?php echo $array[$x]['care_giver_email']['S']; ?></td><td> <a href=\"javascript:void(0)\" onclick=\"spawnDeletePopup(<?php echo $x ?>)\">Remove</a></td></tr><?php } ?>";
 }
 
-populateCareGiverTable();
+//populateCareGiverTable();
 </script>
 
 
