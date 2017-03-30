@@ -449,8 +449,18 @@ input[type="text"]  {
 }
 
 table {
+    border-collapse: collapse;
     width: 100%;
 }
-table, td, th {
-    border: 1px solid black;
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #f44336;
+    color: white;
 }

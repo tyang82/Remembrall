@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/jquery.css">
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
-body {font-size:16px;}
+body {font-size:16px;background: url(./top_red_dots.PNG) no-repeat top center;}
 .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
 .w3-half img:hover{opacity:1}
 </style>
@@ -21,7 +21,7 @@ body {font-size:16px;}
 
 $dynamodb = $currUser['db'];
 $care_giver_email = $currUser['email'];
-    
+//echo $care_giver_email;
 $first_response = $dynamodb->query([
     'TableName' => 'care_givers',
     'KeyConditionExpression' => 'care_giver_email = :email',
@@ -29,7 +29,8 @@ $first_response = $dynamodb->query([
         ':email' => ['S' => $care_giver_email]
     ]
 ]);
-
+//echo "Vardump:";
+//echo var_dump($first_response);
 $acct_email = $first_response['Items'][0]['acct_email']['S'];
 $care_giver_name = $first_response['Items'][0]['name']['S'];
     
@@ -82,15 +83,91 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
            <input type="text" placeholder="When?" id="datepicker" name="datepicker" class="datepick">
          
           
-          <input type="submit" style="background-color:red;border:none; color:white;" value="Remind" name="remind_button">
+          <input type="submit" style="background-color:red;border:none; color:white;position: relative;
+    top: -20px;
+    width: 15%;height: 50px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;" value="Remind" name="remind_button">
         </form>
- 
-      
-     
+    <!-- incomplete tasks-->
+      <?php
+        $caregiver_tasks = $dynamodb->query([
+        'TableName' => 'reminders',
+        'KeyConditionExpression' => 'acct_email = :email',
+        'ExpressionAttributeValues' =>  [
+        ':email' => ['S' => $acct_email]
+            ]
+        ]);
+      $caregiver_tasks = $caregiver_tasks['Items'];
+    ?>
+      <div style="padding-top:125px">
+      <h1><b>Incomplete Tasks</b></h1>
+      <table>
+          <tr>
+              <th>Task</th>
+              <th>Due Date</th>
+              <th>Assigned</th>
+              <th>Status</th>
+          </tr>
+          <!-- php code to load each of the entries --> 	
+		  <?php 
+			//$date = date('m/d/Y');
+			
+			for ($x = 0; $x < count($caregiver_tasks); $x++) {?> 
+  				<tr class="item_row">
+  					<?php
+  						if (false == $caregiver_tasks[$x]['self_flag']['BOOL'] && false == $caregiver_tasks[$x]['complete']['BOOL']) { ?>
+        					<td> <?php echo $caregiver_tasks[$x]['text']['S']; ?></td>
+        					<td> <?php echo $caregiver_tasks[$x]['due']['S']; ?></td>
+                            <td> <?php 
+                                    $assigned_email = $caregiver_tasks[$x]['assigned_caregiver']['S'];
+                                    $person_name = $dynamodb->query([
+                                        'TableName' => 'care_givers',
+                                        'KeyConditionExpression' => 'care_giver_email = :email',
+                                        'ExpressionAttributeValues' =>  [
+                                        ':email' => ['S' => $assigned_email]
+                                        ]
+                                    ]);
+                                    echo $person_name['Items'][0]['name']['S'];                                                                                 
+                                                                                                                                                                                                                                         
+                                ?></td>
+                            <td> <form action="" method="POST" name="reminder_form" >
+                                <input type="submit" placeholder="complete" value="complete" name="<?php echo $x;?>" ></form>
+                                <?php
+                                                                                                                                       
+                                    if(isset($_POST[$x])){
+                                       $timestamp = $caregiver_tasks[$x]['timestamp']['S'];
+                                       $response = $dynamodb->updateItem([
+                                           'TableName' => 'reminders',
+                                            'Key' => [
+                                                'acct_email' => ['S' => $acct_email],
+                                                'timestamp' => ['S' => $timestamp]
+                                            ],
+                                           'ExpressionAttributeValues' => [
+                                            ':val1' => [
+                                                'BOOL' => true
+                                                ]
+                                            ],
+                                           'UpdateExpression' => 'set complete = :val1'
+                                       ]);
+                                        header("Refresh:0");
+                                    }
+                                   ?>                                                                                                    
+                                                                                                                                       
+                            </td>
+        			<?php } ?>
+  				</tr>
+		<?php }?>
+		<!-- php code to load each of the entries ENDS! -->
+      </table>
+      </div>
 
   </div>
     <!-- php code for submit -->
     <?php 
+  
       
    if (isset($_POST["status_submit"]))
    {    
@@ -126,7 +203,7 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
 <!-- History -->
   <a name="history"></a>
 <div class="w3-container" style="margin-top:80px" id="history">
-    <h1 class="w3-xxxlarge"><b>History</b></h1>
+    <h1 class="w3-xxxlarge"><b>Today's History</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
      
 <!-- PHP code for loading the Alexa set reminder -->
@@ -152,7 +229,7 @@ for ($x = 0; $x < count($alexa_in_moment_response); $x++) {
 }
 ?>
   
-    <h1>Instant Task Reminder History for Today</h1>
+    <h1>Instant Task Reminder History</h1>
     <table>
 		<tr>
     		<th>Tasks</th>
@@ -180,7 +257,7 @@ $family_schedule = $dynamodb->query([
 ]);
 $family_schedule = $family_schedule['Items'];
 ?>
-<h1>Family Members' Tasks Today</h1>
+<h1>Family Members' Tasks History</h1>
 	<table>
 		<tr>
 			<th>Name</th>
@@ -189,8 +266,8 @@ $family_schedule = $family_schedule['Items'];
 		<!-- php code to load each of the entries --> 	
 		<?php 
 			$date = date('m/d/Y');
-			echo 'Today\'s Date is: ';
-			echo $date;
+			//echo 'Today\'s Date is: ';
+			//echo $date;
 			for ($x = 0; $x < count($family_schedule); $x++) {?> 
   				<tr class="item_row">
   					<?php
@@ -212,10 +289,62 @@ $family_schedule = $family_schedule['Items'];
     <hr style="width:50px;border:5px solid red" class="w3-round">
      
     <!--code for settings here -->
+    <h1 id="editCareGiver">Edit Caregivers</h1>
+    
+    <?php
+        $list_of_care_givers = $dynamodb->scan([
+            'TableName' => 'care_givers',
+            'ExpressionAttributesValues' => [
+                ':email' => ['S' => $acct_email]] ,
+            'FilterExpressions' => 'acct_email = :email'
+        ]);
+        $care_giver_array = $list_of_care_givers['Items'];
+    ?>
+    
+    <table id="care_giver_table" >
+        <tr>
+            <th>Name</th>    
+            <th>Email</th>
+            <th>Remove</th>
+        </tr>
+    <?php
+        for ($j = 0; $j < count($care_giver_array); $j++) { ?>
+        <tr class="item_row">
+            <td><?php echo $care_giver_array[$j]['name']['S']; ?></td>
+            <td><?php echo $care_giver_array[$j]['care_giver_email']['S']; ?></td>
+            <td><form action="" method="POST" name="user_form">
+                <input type="submit" style="background-color:red;border:none;color:white;" value="Remove" name="delete<?php echo $j ?>"></form>
+                <?php
+                    if (isset($_POST['delete' . $j])) {
+                        $email_to_delete = $care_giver_array[$j]['care_giver_email']['S'];
+                        $delete_response = $dynamodb->deleteItem(['TableName' => 'care_givers',
+                                                                 'Key' => [
+                                                                    'care_giver_email' => ['S' => $email_to_delete],
+                                                                    'acct_email' => ['S' => $acct_email]
+                                                                        ]
+                                                                ]);
+                        ?><meta http-equiv="refresh" content="0"/><?php
+                    }
+                ?>
+            </td>
+        </tr>
+    <?php        
+    }
+    ?>
+    </table>
+    <button id="add_care_giver" type="submit" style="background-color:red;border:none;color:white;" onclick="addCareGiverPopUp()">Add Caregiver</button>
+    
+    
+    
+    
+    
+    
+    
+    
     
 </div>
     
-    
+  
     
     
   
@@ -250,6 +379,11 @@ function onClick(element) {
   var captionText = document.getElementById("caption");
   captionText.innerHTML = element.alt;
 }
+function DeleteRow(o) {
+     //no clue what to put here?
+     var p=o.parentNode.parentNode;
+         p.parentNode.removeChild(p);
+    }
 
 
 </script>
