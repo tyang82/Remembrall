@@ -205,7 +205,11 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
 <div class="w3-container" style="margin-top:80px" id="history">
     <h1 class="w3-xxxlarge"><b>Today's History</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
-     
+<?php
+	$date = date('m/d/Y');
+?>
+	<h4>Today's Date is: <?php echo $date ?> </h4>
+
 <!-- PHP code for loading the Alexa set reminder -->
 <?php
 // echo $acct_email;
@@ -265,9 +269,11 @@ $family_schedule = $family_schedule['Items'];
 		</tr>
 		<!-- php code to load each of the entries --> 	
 		<?php 
+
 			$date = date('m/d/Y');
 			//echo 'Today\'s Date is: ';
 			//echo $date;
+
 			for ($x = 0; $x < count($family_schedule); $x++) {?> 
   				<tr class="item_row">
   					<?php
@@ -289,6 +295,7 @@ $family_schedule = $family_schedule['Items'];
     <hr style="width:50px;border:5px solid red" class="w3-round">
      
     <!--code for settings here -->
+<<<<<<< HEAD
     <h1 id="editCareGiver">Edit Caregivers</h1>
     
     <?php
@@ -337,18 +344,19 @@ $family_schedule = $family_schedule['Items'];
     
     
     
+=======
+<h1 id="editCare">Edit Caregivers</h1>
+<table id="care_giver_table"></table>
+<button id="add_care_giver" type="submit" style="background-color:red;border:none; color:white;" onclick="addCareGiverPopUp()">Add Caregiver</button>
+
+
     
     
-    
-    
-    
+
+
 </div>
     
-  
     
-    
-  
-</div>
 
   <!-- Modal for full size images on click-->
   <div id="modal01" class="w3-modal w3-black w3-padding-0" onclick="this.style.display='none'">
@@ -385,7 +393,60 @@ function DeleteRow(o) {
          p.parentNode.removeChild(p);
     }
 
+function spawnDeletePopup(position) {
+    var confirmation = confirm("Are you sure you want to delete: " + document.getElementById("care_giver_row_" + position).textContent);
+    if (confirmation == true) {
+        deleteCareGiver(position);
+    }
+}
+    
+function addCareGiverPopUp() {
+    
+}
 
+function deleteCareGiver(position) {
+    //var email_to_remove = document.getElementById("care_giver_row_" + position).textContent;
+
+    
+//    if (window.XMLHttpRequest) {
+//        // code for IE7+, Firefox, Chrome, Opera, Safari
+//        xmlhttp = new XMLHttpRequest();
+//    } else {
+//        // code for IE6, IE5
+//        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+//    }
+//    xmlhttp.onreadystatechange = function() {
+//        if (this.readyState == 4 && this.status == 200) {
+//            //
+//            document.getElementById("care_giver_table_load").textContent =  this.responseText;
+//            if (this.responseText) {
+//                //document.getElementById("care_giver_table_load").textContent = "successful";
+//            }
+//            populateCareGiverTable();
+//        }
+//    };
+
+//    xmlhttp.open("GET","deleteUser.php?email="+email_to_remove+"&tablename=care_givers"+"&acct_email="+account_email,true);
+//    xmlhttp.send();
+    populateCareGiverTable();
+}
+function populateCareGiverTable() {
+
+    <?php
+        $list_of_caregivers = $dynamodb->scan([
+            'TableName' => 'care_givers',
+            'ExpressionAttributeValues' => [
+                    ':email' => ['S' => $acct_email]] ,
+            'FilterExpression' => 'acct_email = :email'
+        ]);
+
+        $array = $list_of_caregivers['Items'];
+    ?>
+    //document.getElementById("care_giver_table_load").textContent = "Count: " + count;
+    document.getElementById("care_giver_table").innerHTML = "<tr><th>Name</th><th>Email</th><th>Remove</th></tr><?php for ($x = 0; $x < count($array); $x++) {?> <tr class=\"item_row\"><td> <?php echo $array[$x]['name']['S']; ?></td><td id=\"care_giver_row_<?php echo $x ?>\"> <?php echo $array[$x]['care_giver_email']['S']; ?></td><td> <a href=\"javascript:void(0)\" onclick=\"spawnDeletePopup(<?php echo $x ?>)\">Remove</a></td></tr><?php } ?>";
+}
+
+populateCareGiverTable();
 </script>
 
 
