@@ -189,13 +189,111 @@ const handlers = {
         }
     },
     'SetCaregiverReminderIntent': function() {
+        var d = new Date();
+        var datestring = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + ":" + ("0" + d.getSeconds()).slice(-2);
         // if the reminder does not contain a name
             // put the reminder in the database directly
-        // if it does contain a reminder
+        if (!this.event.request.intent.slots.hasOwnProperty('person')) {
+            var item = {
+                TableName:'reminders',
+                Item: {
+                    acct_email: user_email,
+                    timestamp: datestring,
+                    complete: false,
+                    self_flag: false,
+                    text: this.event.request.intent.slots.task.value,
+                    // assigned_caregiver: ""
+                    // TODO: maybe take out due assignment if nothing specified?
+                    due: datestring
+                }
+            };
+            console.log("Putting the following:");
+            console.log(item);
+            var response = db.put(item, (err, data) => {
+                if (err) {
+                    console.log("PUT_ERROR: " + err);
+                } else {
+                    console.log("PUT_SUCCESS: " + JSON.stringify(data));
+                }
+                this.emit('SetCaregiverReminderSpeech', '');
+            });
+        } else { // if it does contain a name
+            // turn the name into an email address
+            var requestedName = this.event.request.intent.slots.person.value.toLowerCase();
+            var params = {
+                TableName: 'care_givers',
+                ProjectionExpression: "care_giver_email",
+                FilterExpression: "acct_email = :email AND begins_with(#name, :person)",
+                // KeyConditionExpression: "acct_email = :email",
+                ExpressionAttributeNames: {
+                    "#name": "lookup_name"
+                },
+                ExpressionAttributeValues: {
+                    ":person": requestedName,
+                    ":email": user_email
+                }
+            };
+            db.scan(params, (err, data) => {
+                if (err) {
+                    console.log("SCAN_ERROR: " + err);
+                    return;
+                } else {
+                    console.log("SCAN_SUCCESS: " + data);
+                }
+                if (0 === data.Items.length) {
+                    var item = {
+                        TableName:'reminders',
+                        Item: {
+                            acct_email: user_email,
+                            timestamp: datestring,
+                            complete: false,
+                            self_flag: false,
+                            text: this.event.request.intent.slots.task.value,
+                            // assigned_caregiver: ""
+                            // TODO: maybe take out due assignment if nothing specified?
+                            due: datestring
+                        }
+                    };
+                } else {
+                    var email_assigned_to = data.Items[0].care_giver_email;
+                    console.log("Assignee email: " + email_assigned_to);
+                    var item = {
+                        TableName:'reminders',
+                        Item: {
+                            acct_email: user_email,
+                            timestamp: datestring,
+                            complete: false,
+                            self_flag: false,
+                            text: this.event.request.intent.slots.task.value,
+                            assigned_caregiver: data.Items[0].care_giver_email,
+                            // TODO: maybe take out due assignment if nothing specified?
+                            due: datestring
+                        }
+                    };
+                }
+                console.log("Putting the following:");
+                console.log(item);
+                var response = db.put(item, (err, data) => {
+                    if (err) {
+                        console.log("PUT_ERROR: " + err);
+                    } else {
+                        console.log("PUT_SUCCESS: " + JSON.stringify(data));
+                    }
+                    this.emit('SetCaregiverReminderSpeech', requestedName);
+                });
+            });
+        }
             // get a list of caregivers associated with the account
             // look up the person in the list
             // add their email under task assignment
             // put reminder in database
+    },
+    'SetCaregiverReminderSpeech': function(name) {
+        if (0 === name.length) {
+            this.emit(':tell', "Okay, I've saved that reminder for you.");
+        } else {
+            this.emit(':tell', "Okay, I'll tell " + name + " to do that.");
+        }
     },
     'AMAZON.HelpIntent': function () {
         const speechOutput = common_phrases.HELP_MESSAGE;

@@ -12,6 +12,9 @@ SetImmediateReminderIntent that I want to {do the laundry | action}
 SetImmediateReminderIntent I'm going to {do the laundry | action}
 SetImmediateReminderIntent I am going to {do the laundry | action}
 SetImmediateReminderIntent I'll {do the laundry | action} in a bit
+SetImmediateReminderIntent to remind me to {do the laundry | action}
+SetImmediateReminderIntent to remind me that I need to {do the laundry | action}
+SetImmediateReminderIntent to remind me that I want to {do laundry | action}
 
 SetImmediateReminderIntent I need to {do the dishes | action}
 SetImmediateReminderIntent I want to {do dishes | action}
@@ -27,6 +30,9 @@ SetImmediateReminderIntent that I want to {do the dishes | action}
 SetImmediateReminderIntent I'm going to {do the dishes | action}
 SetImmediateReminderIntent I am going to {do the dishes | action}
 SetImmediateReminderIntent I'll {do the dishes | action} in a bit
+SetImmediateReminderIntent to remind me to {do the dishes | action}
+SetImmediateReminderIntent to remind me that I need to {do the dishes | action}
+SetImmediateReminderIntent to remind me that I want to {do dishes | action}
 
 SetImmediateReminderIntent that I need to {take my pills | action}
 SetImmediateReminderIntent I'm going to {take my pills | action}
@@ -34,6 +40,9 @@ SetImmediateReminderIntent that I want to {take my pills | action}
 SetImmediateReminderIntent that I'm going to {take my medication | action}
 SetImmediateReminderIntent I need to {take my medication | action}
 SetImmediateReminderIntent that I want to {take my medication | action}
+SetImmediateReminderIntent to remind me to {take my pills | action}
+SetImmediateReminderIntent to remind me that I need to {take my medication | action}
+SetImmediateReminderIntent to remind me that I want to {take my pills | action}
 
 RecallImmediateReminderIntent what was I going to do
 RecallImmediateReminderIntent what I was going to do
@@ -52,7 +61,7 @@ GetStatusIntent how is {person} {when}
 GetStatusIntent what {person} is doing {when}
 GetStatusIntent what {person} is up to
 GetStatusIntent how {person} is doing {when}
-GetStatusIntent hwo {person} is
+GetStatusIntent how {person} is
 
 SetCaregiverReminderIntent tell {person} that I need {bread from the grocery store | task}
 SetCaregiverReminderIntent I need {milk | task}
