@@ -203,7 +203,7 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
 <!-- History -->
   <a name="history"></a>
 <div class="w3-container" style="margin-top:80px" id="history">
-    <h1 class="w3-xxxlarge"><b>Today's History</b></h1>
+    <h1 class="w3-xxxlarge"><b>History</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
 <?php
 	$date = date('m/d/Y');
@@ -231,9 +231,13 @@ for ($x = 0; $x < count($alexa_in_moment_response); $x++) {
 		$array[$alexa_in_moment_response[$x]['timestamp']['S']] = $alexa_in_moment_response[$x]['text']['S'];
 	}
 }
+$array = array_reverse($array);
+if (count($array) >= 10) {
+  $array = array_slice($array, 0, 10);
+}
 ?>
   
-    <h1>Instant Task Reminder History</h1>
+    <h1><?php echo $care_receiver_name; ?>'s Instant Reminder History</h1>
     <table>
 		<tr>
     		<th>Tasks</th>
@@ -243,10 +247,10 @@ for ($x = 0; $x < count($alexa_in_moment_response); $x++) {
   		<!-- php code to load each of the entries --> 	
 		<?php 
 			foreach ($array as $key=>$value) :?> 
-  				<tr class="item_row">
-        			<td> <?php echo $value; ?></td>
-        			<td> <?php echo $key; ?></td>
-  				</tr>
+            <tr class="item_row">
+              <td> <?php echo $value; ?></td>
+              <td> <?php echo $key; ?></td>
+            </tr>
 		<?php endforeach;?>
 		<!-- php code to load each of the entries ENDS! -->
 	</table>
@@ -261,6 +265,8 @@ $family_schedule = $dynamodb->query([
 ]);
 $family_schedule = $family_schedule['Items'];
 ?>
+
+
 <h1>Family Members' Tasks History</h1>
 	<table>
 		<tr>
