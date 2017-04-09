@@ -303,7 +303,7 @@ $family_schedule = $family_schedule['Items'];
     <!--code for settings here -->
 
     <h1 id="editCareGiver">Edit Caregivers</h1>
-    
+    <span id="alert_box_edit"></span>
     <?php
         $list_of_care_givers = $dynamodb->scan([
             'TableName' => 'care_givers',
@@ -333,19 +333,32 @@ $family_schedule = $family_schedule['Items'];
                 <?php
                     if (isset($_POST['save' . $j])) {
                         //check if name already exists for that account
-                        
-                        
                         $newName = $_POST['newName' . $j];
-                        $email_to_edit = $care_giver_array[$j]['care_giver_email']['S'];
-                        $delete_response = $dynamodb->putItem(['TableName' => 'care_givers',
-                                                                'Item' => [
-                                                                    'acct_email' => ['S' => $acct_email],
-                                                                    'care_giver_email' => ['S' => $email_to_edit],
-                                                                    'name' => ['S' => $newName],
-                                                                    'lookup_name'  => ['S' => strtolower($newName)]
-                                                                ]
-                                                                ]);
-                        ?><meta http-equiv="refresh" content="0"/><?php
+                        
+                        $updateUser = 'true';
+                        for ($h = 0; $h < count($care_giver_array); $h++) {
+                            if (strcasecmp($care_giver_array[$h]['name']['S'], $newName) == 0 and $j != $h) {
+                                //name already exists
+                                
+                                echo '<script type="text/javascript">';
+                                echo 'document.getElementById("alert_box_edit").textContent = "Caregiver name must be unique.";';
+//                                echo 'alert("Name must be unique among caregivers, ' . $newName . ' already exists.");';
+                                echo '</script>';
+                                $updateUser = 'false';
+                            }
+                        }
+                        if (strcmp($updateUser, 'true') == 0) {
+                            $email_to_edit = $care_giver_array[$j]['care_giver_email']['S'];
+                            $update_response = $dynamodb->putItem(['TableName' => 'care_givers',
+                                                                    'Item' => [
+                                                                        'acct_email' => ['S' => $acct_email],
+                                                                        'care_giver_email' => ['S' => $email_to_edit],
+                                                                        'name' => ['S' => $newName],
+                                                                        'lookup_name'  => ['S' => strtolower($newName)]
+                                                                    ]
+                                                                    ]);
+                            ?><meta http-equiv="refresh" content="0"/><?php
+                        }
                     }
                 ?>
             </td></form>
@@ -370,7 +383,7 @@ $family_schedule = $family_schedule['Items'];
     }
     ?>
     </table><br><br>
-    
+    <span id="alert_box_add"></span>
     <form action="" method="POST" name="addCareGiverForm">
         
         <div style="float:left; padding-right: 10px;"><textarea style="width: 300px;height: 50px; padding: 12px 20px; position: relative;top: -20px;" name="addCareGiverName" placeholder="Unique Name"></textarea></div>
@@ -380,21 +393,39 @@ $family_schedule = $family_schedule['Items'];
     
     <?php 
    if (isset($_POST["addCareGiverName"]))
-   {    
-        //TODO check if name already exists for that account
-                            
+   {                       
        $addName = $_POST["addCareGiverName"];
        $addEmail = $_POST["addEmail"];
-        $response = $dynamodb->putItem([
-           'TableName' => 'care_givers',
-           'Item' => [
-                'acct_email' => ['S' => $acct_email],
-                'care_giver_email' => ['S' => $addEmail],
-                'name' => ['S' => $addName],
-                'lookup_name'  => ['S' => strtolower($addName)]
-            ]
-       ]);
-      ?><meta http-equiv="refresh" content="0"/><?php
+       
+       $addPerson = 'true';
+        for ($h = 0; $h < count($care_giver_array); $h++) {
+            if (strcasecmp($care_giver_array[$h]['name']['S'], $addName) == 0) {
+                //name already exists
+                echo '<script type="text/javascript">';
+                echo 'document.getElementById("alert_box_add").textContent = "Caregiver uame must be unique.";';
+                echo '</script>';
+                $addPerson = 'false';
+            }
+            if (strcasecmp($care_giver_array[$h]['care_giver_email']['S'], $addEmail) == 0) {
+                //email already exists
+                echo '<script type="text/javascript">';
+                echo 'document.getElementById("alert_box").textContent = "Caregiver email must be unique.";';
+                echo '</script>';
+                $addPerson = 'false';
+            }
+        }
+        if (strcmp($addPerson, 'true') == 0) {
+            $response = $dynamodb->putItem([
+               'TableName' => 'care_givers',
+               'Item' => [
+                    'acct_email' => ['S' => $acct_email],
+                    'care_giver_email' => ['S' => $addEmail],
+                    'name' => ['S' => $addName],
+                    'lookup_name'  => ['S' => strtolower($addName)]
+                ]
+           ]);
+            ?><meta http-equiv="refresh" content="0"/><?php
+        }
    }
 ?>
 
