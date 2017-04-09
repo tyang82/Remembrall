@@ -209,8 +209,10 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
 
 <!-- History -->
   <a name="history"></a>
-<div class="w3-container" style="margin-top:80px;" id="history">
-    <h1 class="w3-xxxlarge"><b>Today's History</b></h1>
+
+<div class="w3-container" style="margin-top:80px" id="history">
+    <h1 class="w3-xxxlarge"><b>History</b></h1>
+
     <hr style="width:50px;border:5px solid red" class="w3-round">
 <?php
 	$date = date('m/d/Y');
@@ -238,9 +240,13 @@ for ($x = 0; $x < count($alexa_in_moment_response); $x++) {
 		$array[$alexa_in_moment_response[$x]['timestamp']['S']] = $alexa_in_moment_response[$x]['text']['S'];
 	}
 }
+$array = array_reverse($array);
+if (count($array) >= 10) {
+  $array = array_slice($array, 0, 10);
+}
 ?>
   
-    <h1>Instant Task Reminder History</h1>
+    <h1><?php echo $care_receiver_name; ?>'s Instant Reminder History</h1>
     <table>
 		<tr>
     		<th>Tasks</th>
@@ -250,10 +256,10 @@ for ($x = 0; $x < count($alexa_in_moment_response); $x++) {
   		<!-- php code to load each of the entries --> 	
 		<?php 
 			foreach ($array as $key=>$value) :?> 
-  				<tr class="item_row">
-        			<td> <?php echo $value; ?></td>
-        			<td> <?php echo $key; ?></td>
-  				</tr>
+            <tr class="item_row">
+              <td> <?php echo $value; ?></td>
+              <td> <?php echo $key; ?></td>
+            </tr>
 		<?php endforeach;?>
 		<!-- php code to load each of the entries ENDS! -->
 	</table>
@@ -268,6 +274,8 @@ $family_schedule = $dynamodb->query([
 ]);
 $family_schedule = $family_schedule['Items'];
 ?>
+
+
 <h1>Family Members' Tasks History</h1>
 	<table>
 		<tr>
@@ -304,7 +312,7 @@ $family_schedule = $family_schedule['Items'];
     <!--code for settings here -->
 
     <h1 id="editCareGiver">Edit Caregivers</h1>
-    
+    <span id="alert_box_edit"></span>
     <?php
         $list_of_care_givers = $dynamodb->scan([
             'TableName' => 'care_givers',
@@ -319,14 +327,52 @@ $family_schedule = $family_schedule['Items'];
         <tr>
             <th>Name</th>    
             <th>Email</th>
-            <th>Remove</th>
+            <th></th>
+            <th></th>
         </tr>
     <?php
         for ($j = 0; $j < count($care_giver_array); $j++) { ?>
         <tr class="item_row">
-            <td><?php echo $care_giver_array[$j]['name']['S']; ?></td>
+            <form action="" method="POST" name="edit_form">
+            <td><input name="newName<?php echo $j ?>" value="<?php echo $care_giver_array[$j]['name']['S']; ?>"></td>
             <td><?php echo $care_giver_array[$j]['care_giver_email']['S']; ?></td>
-            <td><form action="" method="POST" name="user_form">
+            <td>
+                
+                <input type="submit" style="background-color:red;border:none;color:white;" value="Save" name="save<?php echo $j ?>">
+                <?php
+                    if (isset($_POST['save' . $j])) {
+                        //check if name already exists for that account
+                        $newName = $_POST['newName' . $j];
+                        
+                        $updateUser = 'true';
+                        for ($h = 0; $h < count($care_giver_array); $h++) {
+                            if (strcasecmp($care_giver_array[$h]['name']['S'], $newName) == 0 and $j != $h) {
+                                //name already exists
+                                
+                                echo '<script type="text/javascript">';
+                                echo 'document.getElementById("alert_box_edit").textContent = "Caregiver name must be unique.";';
+//                                echo 'alert("Name must be unique among caregivers, ' . $newName . ' already exists.");';
+                                echo '</script>';
+                                $updateUser = 'false';
+                            }
+                        }
+                        if (strcmp($updateUser, 'true') == 0) {
+                            $email_to_edit = $care_giver_array[$j]['care_giver_email']['S'];
+                            $update_response = $dynamodb->putItem(['TableName' => 'care_givers',
+                                                                    'Item' => [
+                                                                        'acct_email' => ['S' => $acct_email],
+                                                                        'care_giver_email' => ['S' => $email_to_edit],
+                                                                        'name' => ['S' => $newName],
+                                                                        'lookup_name'  => ['S' => strtolower($newName)]
+                                                                    ]
+                                                                    ]);
+                            ?><meta http-equiv="refresh" content="0"/><?php
+                        }
+                    }
+                ?>
+            </td></form>
+                
+            <td><form action="" method="POST" name="delete_form">
                 <input type="submit" style="background-color:red;border:none;color:white;" value="Remove" name="delete<?php echo $j ?>"></form>
                 <?php
                     if (isset($_POST['delete' . $j])) {
@@ -345,11 +391,52 @@ $family_schedule = $family_schedule['Items'];
     <?php        
     }
     ?>
-    </table>
-    <button id="add_care_giver" type="submit" style="background-color:red;border:none;color:white;" onclick="addCareGiverPopUp()">Add Caregiver</button>
+    </table><br><br>
+    <span id="alert_box_add"></span>
+    <form action="" method="POST" name="addCareGiverForm">
+        
+        <div style="float:left; padding-right: 10px;"><textarea style="width: 300px;height: 50px; padding: 12px 20px; position: relative;top: -20px;" name="addCareGiverName" placeholder="Unique Name"></textarea></div>
+        <div style="float:left; padding-right: 10px;"><input style="width: 300px;height: 50px; padding: 12px 20px; position: relative;top: -20px;" type="text" placeholder="Email" id="addEmail" name="addEmail"></div>
+        <div style="float:left;"><input type="submit" style="background-color:red;border:none; color:white;position: relative;top: -20px;height: 50px;padding: 12px 20px;box-sizing: border-box;border: 2px solid #ccc;border-radius: 4px;" value="Add Caregiver" name="addCareGiverButton"></div>
+    </form>
     
-    
-    
+    <?php 
+   if (isset($_POST["addCareGiverName"]))
+   {                       
+       $addName = $_POST["addCareGiverName"];
+       $addEmail = $_POST["addEmail"];
+       
+       $addPerson = 'true';
+        for ($h = 0; $h < count($care_giver_array); $h++) {
+            if (strcasecmp($care_giver_array[$h]['name']['S'], $addName) == 0) {
+                //name already exists
+                echo '<script type="text/javascript">';
+                echo 'document.getElementById("alert_box_add").textContent = "Caregiver uame must be unique.";';
+                echo '</script>';
+                $addPerson = 'false';
+            }
+            if (strcasecmp($care_giver_array[$h]['care_giver_email']['S'], $addEmail) == 0) {
+                //email already exists
+                echo '<script type="text/javascript">';
+                echo 'document.getElementById("alert_box").textContent = "Caregiver email must be unique.";';
+                echo '</script>';
+                $addPerson = 'false';
+            }
+        }
+        if (strcmp($addPerson, 'true') == 0) {
+            $response = $dynamodb->putItem([
+               'TableName' => 'care_givers',
+               'Item' => [
+                    'acct_email' => ['S' => $acct_email],
+                    'care_giver_email' => ['S' => $addEmail],
+                    'name' => ['S' => $addName],
+                    'lookup_name'  => ['S' => strtolower($addName)]
+                ]
+           ]);
+            ?><meta http-equiv="refresh" content="0"/><?php
+        }
+   }
+?>
 
 </div>
     
@@ -390,60 +477,6 @@ function DeleteRow(o) {
          p.parentNode.removeChild(p);
     }
 
-function spawnDeletePopup(position) {
-    var confirmation = confirm("Are you sure you want to delete: " + document.getElementById("care_giver_row_" + position).textContent);
-    if (confirmation == true) {
-        deleteCareGiver(position);
-    }
-}
-    
-function addCareGiverPopUp() {
-    
-}
-
-function deleteCareGiver(position) {
-    //var email_to_remove = document.getElementById("care_giver_row_" + position).textContent;
-
-    
-//    if (window.XMLHttpRequest) {
-//        // code for IE7+, Firefox, Chrome, Opera, Safari
-//        xmlhttp = new XMLHttpRequest();
-//    } else {
-//        // code for IE6, IE5
-//        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-//    }
-//    xmlhttp.onreadystatechange = function() {
-//        if (this.readyState == 4 && this.status == 200) {
-//            //
-//            document.getElementById("care_giver_table_load").textContent =  this.responseText;
-//            if (this.responseText) {
-//                //document.getElementById("care_giver_table_load").textContent = "successful";
-//            }
-//            populateCareGiverTable();
-//        }
-//    };
-
-//    xmlhttp.open("GET","deleteUser.php?email="+email_to_remove+"&tablename=care_givers"+"&acct_email="+account_email,true);
-//    xmlhttp.send();
-    populateCareGiverTable();
-}
-function populateCareGiverTable() {
-
-    <?php
-        $list_of_caregivers = $dynamodb->scan([
-            'TableName' => 'care_givers',
-            'ExpressionAttributeValues' => [
-                    ':email' => ['S' => $acct_email]] ,
-            'FilterExpression' => 'acct_email = :email'
-        ]);
-
-        $array = $list_of_caregivers['Items'];
-    ?>
-    //document.getElementById("care_giver_table_load").textContent = "Count: " + count;
-    document.getElementById("care_giver_table").innerHTML = "<tr><th>Name</th><th>Email</th><th>Remove</th></tr><?php for ($x = 0; $x < count($array); $x++) {?> <tr class=\"item_row\"><td> <?php echo $array[$x]['name']['S']; ?></td><td id=\"care_giver_row_<?php echo $x ?>\"> <?php echo $array[$x]['care_giver_email']['S']; ?></td><td> <a href=\"javascript:void(0)\" onclick=\"spawnDeletePopup(<?php echo $x ?>)\">Remove</a></td></tr><?php } ?>";
-}
-
-//populateCareGiverTable();
 </script>
 
 
