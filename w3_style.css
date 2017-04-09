@@ -464,3 +464,26 @@ th {
     background-color: #f44336;
     color: white;
 }
+.contain-this
+{  
+    height: 100%;
+    display: table-cell;   
+    vertical-align: middle;    
+}
+.cent
+{
+    height: 50px;
+    width: 50px;
+    background-color: black;      
+}
+.medium-btn {
+        width: 70px;
+        height: 30px;
+ }
+.floating {
+    float: left;
+    padding-right: 10px;
+    padding-top: 20px;
+
+}
+    

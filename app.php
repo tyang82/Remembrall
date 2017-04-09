@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 <title>Remembrall</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -73,23 +76,26 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
   <!-- Home: what are you doing -->
   <a name="home"></a>
   <div class="w3-container" style="margin-top:80px" id="home">
-    <h1 class="w3-xxxlarge"><b>Remembrall Home</b></h1>
+    <h1 class="w3-xxxlarge"><b>Home</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
       
       <h1><b>Let <strong data-bind="text: care_receiver_name"></strong> know what you're doing</b></h1>
        <form action="" method="POST" name="reminder_form">
-         
-               <textarea name="status_submit" placeholder="What are you doing?"></textarea>
-           <input type="text" placeholder="When?" id="datepicker" name="datepicker" class="datepick">
-         
-          
+               <div class="floating" style="width: 100%">
+                   <textarea name="status_submit" style="position: relative; top: -20px; height: 50px; width: 100%;" placeholder="What are you doing?"></textarea>
+           </div> 
+           <div class="floating">
+           <input type="text" style="position: relative; top: -20px; height: 50px; width: 300px;" placeholder="<?php echo date("m/d/Y") ?>" id="datepicker" name="datepicker" class="datepick">
+            </div> 
+          <div class="floating" >
           <input type="submit" style="background-color:red;border:none; color:white;position: relative;
     top: -20px;
-    width: 15%;height: 50px;
+    height: 50px; width: 150px;
     padding: 12px 20px;
     box-sizing: border-box;
     border: 2px solid #ccc;
-    border-radius: 4px;" value="Remind" name="remind_button">
+    border-radius: 4px;float: left;" value="Enter" name="remind_button">
+           </div>
         </form>
     <!-- incomplete tasks-->
       <?php
@@ -102,7 +108,7 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
         ]);
       $caregiver_tasks = $caregiver_tasks['Items'];
     ?>
-      <div style="padding-top:125px">
+      <div style="padding-top:250px">
       <h1><b>Incomplete Tasks</b></h1>
       <table>
           <tr>
@@ -134,7 +140,7 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
                                                                                                                                                                                                                                          
                                 ?></td>
                             <td> <form action="" method="POST" name="reminder_form" >
-                                <input type="submit" placeholder="complete" value="complete" name="<?php echo $x;?>" ></form>
+                                <input type="submit" style="background-color:red;border:none;color:white;" placeholder="complete" value="complete" name="<?php echo $x;?>" ></form>
                                 <?php
                                                                                                                                        
                                     if(isset($_POST[$x])){
@@ -193,7 +199,8 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
   
   <script>
   $(document).ready(function() {
-    $("#datepicker").datepicker();
+      var currentDate = new Date();
+    $("#datepicker").datepicker().datepicker("setDate", new Date());
   });
 
   </script>
@@ -202,7 +209,7 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
 
 <!-- History -->
   <a name="history"></a>
-<div class="w3-container" style="margin-top:80px" id="history">
+<div class="w3-container" style="margin-top:80px;" id="history">
     <h1 class="w3-xxxlarge"><b>Today's History</b></h1>
     <hr style="width:50px;border:5px solid red" class="w3-round">
 <?php

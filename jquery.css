@@ -7,6 +7,7 @@
 .ui-datepicker .ui-datepicker-header {
 	position: relative;
 	padding: .2em 0;
+    background-color: #ffffff;
 }
 .ui-datepicker .ui-datepicker-prev,
 .ui-datepicker .ui-datepicker-next {
@@ -14,6 +15,7 @@
 	top: 2px;
 	width: 1.8em;
 	height: 1.8em;
+    background-color: #ffffff;
 }
 .ui-datepicker .ui-datepicker-prev-hover,
 .ui-datepicker .ui-datepicker-next-hover {
@@ -39,19 +41,24 @@
 	margin-left: -8px;
 	top: 50%;
 	margin-top: -8px;
+    background-color: #ffffff;
 }
 .ui-datepicker .ui-datepicker-title {
 	margin: 0 2.3em;
 	line-height: 1.8em;
 	text-align: center;
+    background-color: #ffffff;
+    
 }
 .ui-datepicker .ui-datepicker-title select {
 	font-size: 1em;
 	margin: 1px 0;
+   background-color: #ffffff;
 }
 .ui-datepicker select.ui-datepicker-month,
 .ui-datepicker select.ui-datepicker-year {
 	width: 45%;
+    background-color: #ffffff;
 }
 .ui-datepicker table {
 	width: 100%;
@@ -64,10 +71,14 @@
 	text-align: center;
 	font-weight: bold;
 	border: 0;
+    
+   
 }
 .ui-datepicker td {
 	border: 0;
 	padding: 1px;
+    background-color: #f2f2f2
+    
 }
 .ui-datepicker td span,
 .ui-datepicker td a {
@@ -75,6 +86,7 @@
 	padding: .2em;
 	text-align: right;
 	text-decoration: none;
+    background-color: #ffffff
 }
 .ui-datepicker .ui-datepicker-buttonpane {
 	background-image: none;
