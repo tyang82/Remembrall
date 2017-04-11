@@ -24,7 +24,7 @@ body {font-size:16px;background: url(./top_red_dots.PNG) no-repeat top center;}
 
 $dynamodb = $currUser['db'];
 $care_giver_email = $currUser['email'];
-//echo $care_giver_email;
+echo $care_giver_email;
 $first_response = $dynamodb->query([
     'TableName' => 'care_givers',
     'KeyConditionExpression' => 'care_giver_email = :email',
@@ -158,7 +158,8 @@ $care_receiver_name = $response['Items'][0]['name']['S'];
                                             ],
                                            'UpdateExpression' => 'set complete = :val1'
                                        ]);
-                                        header("Refresh:0");
+                                        ?><meta http-equiv="refresh" content="0"/><?php
+                                        //header("Refresh:0");
                                     }
                                    ?>                                                                                                    
                                                                                                                                        
